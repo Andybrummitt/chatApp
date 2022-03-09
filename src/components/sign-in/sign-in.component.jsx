@@ -12,7 +12,7 @@ const SignIn = () => {
     
       const handleSubmit = (e) => {
         e.preventDefault();
-        // log in user and change state to auth
+        // log in user and change state to auth.
       };
     
       const handleChange = (e) => {
