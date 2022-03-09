@@ -1,0 +1,12 @@
+.sign-in-sign-up-container {
+    display: flex;
+    max-width: 1400px;
+    flex-direction: column;
+    @media only screen and (min-width: 600px) {
+        flex-direction: row;
+    }
+    justify-content: space-between;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
