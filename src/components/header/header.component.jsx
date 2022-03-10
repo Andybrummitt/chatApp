@@ -10,12 +10,6 @@ const Header = () => {
         <Link to="/" className="nav-link logo-icon">
           Logo
         </Link>
-        <Link to="/" className="nav-link chat-link">
-          Chat
-        </Link>
-        <Link to="/" className="nav-link find-friends-link">
-          Find Friends
-        </Link>
         <Link to="/signin" className="nav-link account-link">
           Account
         </Link>

@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import GoogleSignInBtn from "../../components/google-signin-btn/google-signin-btn.component";
 import SignIn from "../../components/sign-in/sign-in.component";
 import SignUp from "../../components/sign-up/sign-up.component";
-
-import './sign-in-sign-up.styles.scss'
+import "./sign-in-sign-up.styles.scss";
 
 const SignInSignUpPage = () => {
+  const [hasAccount, setHasAccount] = useState(true);
+
+  useEffect(() => {
+    console.log(hasAccount)
+  })
+
   return (
     <div className="sign-in-sign-up-container page-container">
-      <SignIn />
-      <SignUp />
+      {hasAccount ? (
+        <SignIn setHasAccount={setHasAccount} /> )
+         : (
+           <SignUp setHasAccount={setHasAccount} />
+         )}
+      <GoogleSignInBtn />
     </div>
   );
 };

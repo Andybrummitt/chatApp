@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FormGroup from "../form-input/form-group.component";
 import "./sign-up.styles.scss";
 
-const SignUp = () => {
+const SignUp = ({ setHasAccount }) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -28,6 +28,9 @@ const SignUp = () => {
 
   return (
     <div className="sign-up">
+      <p className="go-to-signin" onClick={() => setHasAccount(true)}>
+        I already have an account
+      </p>
       <h2 className="title">Sign Up</h2>
       <form onSubmit={handleSubmit}>
         <FormGroup
