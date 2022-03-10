@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import firebase from 'firebase/compat/app'; 
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
@@ -13,18 +13,19 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 
+export const auth = getAuth();
+
 export const handleGoogleSignIn = () => {
-  const auth = getAuth();
-  signInWithPopup(auth, provider)
+  return signInWithPopup(auth, provider)
   .then((result) => {
       const user = result.user;
-      console.log(user)
+      return user;
   }).catch((error) => {
-      console.log(error)
+      return error;
   });
 
 }

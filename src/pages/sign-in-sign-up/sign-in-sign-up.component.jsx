@@ -4,21 +4,24 @@ import SignIn from "../../components/sign-in/sign-in.component";
 import SignUp from "../../components/sign-up/sign-up.component";
 import "./sign-in-sign-up.styles.scss";
 
+
 const SignInSignUpPage = () => {
   const [hasAccount, setHasAccount] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    console.log(hasAccount)
-  })
+    console.log(hasAccount);
+  });
 
   return (
     <div className="sign-in-sign-up-container page-container">
       {hasAccount ? (
-        <SignIn setHasAccount={setHasAccount} /> )
-         : (
-           <SignUp setHasAccount={setHasAccount} />
-         )}
-      <GoogleSignInBtn />
+        <SignIn setHasAccount={setHasAccount} />
+      ) : (
+        <SignUp setHasAccount={setHasAccount} />
+      )}
+      <GoogleSignInBtn setError={setError} />
+      {error && <p className="error-message">{error.message}</p>}
     </div>
   );
 };
