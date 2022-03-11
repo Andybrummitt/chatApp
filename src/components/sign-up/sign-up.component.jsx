@@ -19,30 +19,46 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
 
   const [error, setError] = useState("");
 
+  const validatePassword = (password, confirmPassword) => {
+    if (password !== confirmPassword) {
+      setError("Passwords don\'t match");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters long");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
-    const { displayName, email, password } = userInfo;
     e.preventDefault();
-    let userNameAvailable;
-    try {
-      userNameAvailable = await checkUserNameAvailable(displayName);
-    } catch (error) {
-      setError(error.message);
+    setError("");
+    const { displayName, email, password, confirmPassword } = userInfo;
+    if (!validatePassword(password, confirmPassword)) {
       return;
     }
 
-    if (!userNameAvailable) {
-      setError("Sorry that username is not available.");
+    let userNameAvailable;
+
+    try {
+      userNameAvailable = await checkUserNameAvailable(displayName);
+    }
+    catch(err){
+      setError(`${error.code}: ${error.message}`)
+    }
+
+    if(!userNameAvailable){
+      setError("Sorry that username is taken.");
       return;
     }
-    // check password strength
-    // check display name availability
-    // check if user in db
-    // if all checks good then update user to auth and store in db
 
     storeUserInDb(email, password)
       .then((user) => storeUsernameInDb(user, displayName))
       .then(() => updateUserName(displayName))
-      .catch((error) => setError(error.message));
+      .catch((error) => {
+        setError(`${error.code ? error.code : ''} ${error.message}`)
+      });
   };
 
   const handleChange = (e) => {

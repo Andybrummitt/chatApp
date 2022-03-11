@@ -53,6 +53,9 @@ export const storeUserInDb = async (email, password) => {
 };
 
 export const storeUsernameInDb = async (user, username) => {
+  if( user instanceof Error){
+    throw new Error(user.message);
+  }
   await setDoc(doc(db, "usernames", username), {
     uid: user.uid,
   });
@@ -60,15 +63,12 @@ export const storeUsernameInDb = async (user, username) => {
 
 export const handleSignIn = (email, password) => {
   const auth = getAuth();
-  console.log(auth);
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      console.log(user);
       return user;
     })
     .catch((error) => {
-      console.log(error);
       return error;
     });
 };
@@ -77,10 +77,8 @@ export const handleSignOut = () => {
   const auth = getAuth();
   signOut(auth)
     .then(() => {
-      console.log("signed out user");
     })
     .catch((error) => {
-      console.log(error);
       return error;
     });
 };
@@ -89,10 +87,8 @@ export const checkUserNameAvailable = async (username) => {
   const usernameRef = doc(db, "usernames", username);
   const usernameSnap = await getDoc(usernameRef);
   if (usernameSnap.exists()) {
-    console.log("sorry that username has been taken");
     return false;
   } else {
-    console.log("fine so far!");
     return true;
   }
 };
