@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import {
+  checkUserNameAvailable,
+  storeUserInDb,
+  storeUsernameInDb,
+} from "../../firebase/firebase.utils";
+import { updateUserName } from "../../redux/user/user.actions";
 import FormGroup from "../form-input/form-group.component";
 import "./sign-up.styles.scss";
 
-const SignUp = ({ setHasAccount }) => {
+const SignUp = ({ setHasAccount, updateUserName }) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -10,12 +17,32 @@ const SignUp = ({ setHasAccount }) => {
     displayName: "",
   });
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    const { displayName, email, password } = userInfo;
     e.preventDefault();
+    let userNameAvailable;
+    try {
+      userNameAvailable = await checkUserNameAvailable(displayName);
+    } catch (error) {
+      setError(error.message);
+      return;
+    }
+
+    if (!userNameAvailable) {
+      setError("Sorry that username is not available.");
+      return;
+    }
     // check password strength
     // check display name availability
     // check if user in db
     // if all checks good then update user to auth and store in db
+
+    storeUserInDb(email, password)
+      .then((user) => storeUsernameInDb(user, displayName))
+      .then(() => updateUserName(displayName))
+      .catch((error) => setError(error.message));
   };
 
   const handleChange = (e) => {
@@ -32,6 +59,7 @@ const SignUp = ({ setHasAccount }) => {
         I already have an account
       </p>
       <h2 className="title">Sign Up</h2>
+      <p className="error-message">{error}</p>
       <form onSubmit={handleSubmit}>
         <FormGroup
           name="email"
@@ -67,4 +95,8 @@ const SignUp = ({ setHasAccount }) => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  updateUserName: (username) => dispatch(updateUserName(username)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { handleSignIn } from "../../firebase/firebase.utils";
 import FormGroup from "../form-input/form-group.component";
 import "./sign-in.styles.scss";
 
@@ -11,6 +12,7 @@ const SignIn = ({ setHasAccount }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // log in user and change state to auth.
+    handleSignIn(userInfo.email, userInfo.password)
   };
 
   const handleChange = (e) => {

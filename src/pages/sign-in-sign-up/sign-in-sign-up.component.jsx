@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import GoogleSignInBtn from "../../components/google-signin-btn/google-signin-btn.component";
 import SignIn from "../../components/sign-in/sign-in.component";
 import SignUp from "../../components/sign-up/sign-up.component";
+import { handleSignOut } from "../../firebase/firebase.utils";
 import "./sign-in-sign-up.styles.scss";
 
 
 const SignInSignUpPage = () => {
   const [hasAccount, setHasAccount] = useState(true);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    console.log(hasAccount);
-  });
 
   return (
     <div className="sign-in-sign-up-container page-container">
@@ -21,6 +18,7 @@ const SignInSignUpPage = () => {
         <SignUp setHasAccount={setHasAccount} />
       )}
       <GoogleSignInBtn setError={setError} />
+      <button className="sign-out" onClick={handleSignOut}>Sign Out</button>
       {error && <p className="error-message">{error.message}</p>}
     </div>
   );
