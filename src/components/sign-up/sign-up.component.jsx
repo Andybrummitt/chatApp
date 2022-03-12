@@ -6,6 +6,7 @@ import {
   storeUsernameInDb,
 } from "../../firebase/firebase.utils";
 import { updateUserName } from "../../redux/user/user.actions";
+import Button from "../button/button.component";
 import FormGroup from "../form-input/form-group.component";
 import "./sign-up.styles.scss";
 
@@ -83,6 +84,7 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
           label="email"
           value={userInfo.email}
           handleChange={handleChange}
+          required
         />
         <FormGroup
           name="password"
@@ -90,6 +92,7 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
           label="password"
           value={userInfo.password}
           handleChange={handleChange}
+          required
         />
         <FormGroup
           name="confirmPassword"
@@ -97,6 +100,7 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
           label="confirm password"
           value={userInfo.confirmPassword}
           handleChange={handleChange}
+          required
         />
         <FormGroup
           name="displayName"
@@ -104,8 +108,9 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
           label="display name"
           value={userInfo.displayName}
           handleChange={handleChange}
+          required
         />
-        <button type="submit">Sign Up</button>
+        <Button children="Sign Up" type="submit" />
       </form>
     </div>
   );

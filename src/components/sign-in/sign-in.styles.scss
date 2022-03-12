@@ -1,6 +1,5 @@
 .sign-in {
     max-width: 600px;
-    margin: 1rem 0;
     width: 90%;
 
     .title {
@@ -8,6 +7,7 @@
     }
 
     .go-to-signup {
+        margin-bottom: 1rem;
         color: blue;
         text-decoration: underline;
         cursor: pointer;

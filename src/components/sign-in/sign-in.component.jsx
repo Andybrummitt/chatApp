@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { handleSignIn } from "../../firebase/firebase.utils";
+import Button from "../button/button.component";
 import FormGroup from "../form-input/form-group.component";
 import "./sign-in.styles.scss";
 
@@ -38,6 +39,7 @@ const SignIn = ({ setHasAccount }) => {
           label="email"
           value={email}
           handleChange={handleChange}
+          required
         />
         <FormGroup
           name="password"
@@ -45,8 +47,9 @@ const SignIn = ({ setHasAccount }) => {
           label="password"
           value={password}
           handleChange={handleChange}
+          required
         />
-        <button type="submit">Sign In</button>
+        <Button type="submit" children="Sign In" />
       </form>
     </div>
   );

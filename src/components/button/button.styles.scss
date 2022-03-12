@@ -1,0 +1,15 @@
+.btn {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    border: none;
+    border-radius: 0.25rem;
+    font-size: 16px;
+    background: #25e88a;
+    color: white;
+
+    &.google-btn {
+        background: #0995e6;
+        width: 90%;
+    }
+}
