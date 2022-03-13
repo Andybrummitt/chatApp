@@ -6,6 +6,7 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import firebase from "firebase/compat/app";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
@@ -53,7 +54,7 @@ export const storeUserInDb = async (email, password) => {
 };
 
 export const storeUsernameInDb = async (user, username) => {
-  if( user instanceof Error){
+  if (user instanceof Error) {
     throw new Error(user.message);
   }
   await setDoc(doc(db, "usernames", username), {
@@ -76,8 +77,7 @@ export const handleSignIn = (email, password) => {
 export const handleSignOut = () => {
   const auth = getAuth();
   signOut(auth)
-    .then(() => {
-    })
+    .then(() => {})
     .catch((error) => {
       return error;
     });
@@ -91,4 +91,11 @@ export const checkUserNameAvailable = async (username) => {
   } else {
     return true;
   }
+};
+
+export const updateUserDisplaynameInDb = async (username) => {
+  const auth = getAuth();
+  return updateProfile(auth.currentUser, {
+    displayName: username,
+  });
 };

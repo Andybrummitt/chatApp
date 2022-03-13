@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import { connect } from "react-redux";
 import {
   checkUserNameAvailable,
   storeUserInDb,
   storeUsernameInDb,
+  updateUserDisplaynameInDb,
 } from "../../firebase/firebase.utils";
-import { updateUserName } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
-import FormGroup from "../form-input/form-group.component";
+import FormGroup from "../form-group/form-group.component";
 import "./sign-up.styles.scss";
 
-const SignUp = ({ setHasAccount, updateUserName }) => {
+const SignUp = ({ setHasAccount }) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -22,7 +21,7 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
 
   const validatePassword = (password, confirmPassword) => {
     if (password !== confirmPassword) {
-      setError("Passwords don\'t match");
+      setError("Passwords don't match");
       return false;
     }
     if (password.length < 6) {
@@ -44,21 +43,20 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
 
     try {
       userNameAvailable = await checkUserNameAvailable(displayName);
-    }
-    catch(err){
-      setError(`${error.code}: ${error.message}`)
+    } catch (err) {
+      setError(`${error.code}: ${error.message}`);
     }
 
-    if(!userNameAvailable){
+    if (!userNameAvailable) {
       setError("Sorry that username is taken.");
       return;
     }
 
     storeUserInDb(email, password)
       .then((user) => storeUsernameInDb(user, displayName))
-      .then(() => updateUserName(displayName))
+      .then(() => updateUserDisplaynameInDb(displayName))
       .catch((error) => {
-        setError(`${error.code ? error.code : ''} ${error.message}`)
+        setError(`${error.code ? error.code : ""} ${error.message}`);
       });
   };
 
@@ -116,8 +114,4 @@ const SignUp = ({ setHasAccount, updateUserName }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  updateUserName: (username) => dispatch(updateUserName(username)),
-});
-
-export default connect(null, mapDispatchToProps)(SignUp);
+export default SignUp;

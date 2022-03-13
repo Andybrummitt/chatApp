@@ -1,6 +1,5 @@
 const INITIAL_STATE = {
   user: null,
-  username: "",
 };
 
 function userReducer(state = INITIAL_STATE, action) {
@@ -15,11 +14,6 @@ function userReducer(state = INITIAL_STATE, action) {
         ...state,
         user: null,
         username: "",
-      };
-    case "UPDATE_USER_NAME":
-      return {
-        ...state,
-        username: action.payload,
       };
     default:
       return state;

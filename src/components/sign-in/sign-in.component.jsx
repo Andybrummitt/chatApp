@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { handleSignIn } from "../../firebase/firebase.utils";
 import Button from "../button/button.component";
-import FormGroup from "../form-input/form-group.component";
+import FormGroup from "../form-group/form-group.component";
 import "./sign-in.styles.scss";
 
 const SignIn = ({ setHasAccount }) => {

@@ -11,7 +11,7 @@ const Header = () => {
           Logo
         </Link>
         <Link to="/signin" className="nav-link account-link">
-          Account
+          Sign in
         </Link>
       </nav>
     </div>
