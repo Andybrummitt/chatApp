@@ -1,13 +1,20 @@
-import React from 'react';
-import { handleSignOut } from '../../firebase/firebase.utils';
+import React from "react";
+import { connect } from "react-redux";
+import { handleSignOut } from "../../firebase/firebase.utils";
 
-const HomePage = () => {
+const HomePage = ({ user }) => {
   return (
     <div>
-      <div>HomePage</div>
-      <button className="sign-out" onClick={handleSignOut}>Sign Out</button>
+      <div>HomePage: {user.displayName}</div>
+      <button className="sign-out" onClick={handleSignOut}>
+        Sign Out
+      </button>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+
+export default connect(mapStateToProps)(HomePage);

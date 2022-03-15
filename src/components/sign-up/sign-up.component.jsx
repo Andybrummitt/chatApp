@@ -1,15 +1,16 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
 import {
   checkUserNameAvailable,
   storeUserInDb,
-  storeUsernameInDb,
-  updateUserDisplaynameInDb,
+  storeUsernameInDbAndUpdateProfile,
 } from "../../firebase/firebase.utils";
+import { logInUser, logOutUser } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
 import FormGroup from "../form-group/form-group.component";
 import "./sign-up.styles.scss";
 
-const SignUp = ({ setHasAccount }) => {
+const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -51,10 +52,13 @@ const SignUp = ({ setHasAccount }) => {
       setError("Sorry that username is taken.");
       return;
     }
-
     storeUserInDb(email, password)
-      .then((user) => storeUsernameInDb(user, displayName))
-      .then(() => updateUserDisplaynameInDb(displayName))
+      .then((user) => storeUsernameInDbAndUpdateProfile(user, displayName))
+      .then((user) => {
+        //  SOLUTION TO UPDATE AUTH STATE CHANGED TO UPDATE REDUX STATE FOR DISPLAY NAME CHANGE
+        logOutUser(user);
+        logInUser(user);
+      })
       .catch((error) => {
         setError(`${error.code ? error.code : ""} ${error.message}`);
       });
@@ -114,4 +118,9 @@ const SignUp = ({ setHasAccount }) => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  logInUser: (user) => dispatch(logInUser(user)),
+  logOutUser: (user) => dispatch(logOutUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);

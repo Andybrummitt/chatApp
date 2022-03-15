@@ -9,7 +9,16 @@ import {
   updateProfile,
 } from "firebase/auth";
 import firebase from "firebase/compat/app";
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDw2nLDZ7cIF5fL5_031wJaSU6w4vmbYZo",
@@ -32,7 +41,6 @@ export const auth = getAuth();
 export const handleGoogleSignIn = () => {
   return signInWithPopup(auth, provider)
     .then((result) => {
-      console.log(result);
       const user = result.user;
       return user;
     })
@@ -53,13 +61,19 @@ export const storeUserInDb = async (email, password) => {
     });
 };
 
-export const storeUsernameInDb = async (user, username) => {
+export const storeUsernameInDbAndUpdateProfile = async (user, username) => {
   if (user instanceof Error) {
     throw new Error(user.message);
   }
-  await setDoc(doc(db, "usernames", username), {
+  return setDoc(doc(db, "usernames", username), {
     uid: user.uid,
-  });
+  })
+    .then(() =>
+      updateProfile(auth.currentUser, {
+        displayName: username,
+      })
+    )
+    .then(() => user);
 };
 
 export const handleSignIn = (email, password) => {
@@ -93,9 +107,10 @@ export const checkUserNameAvailable = async (username) => {
   }
 };
 
-export const updateUserDisplaynameInDb = async (username) => {
-  const auth = getAuth();
-  return updateProfile(auth.currentUser, {
-    displayName: username,
-  });
+export const checkUserNameLinked = async (user) => {
+  const { uid: userUid } = user;
+  const q = query(collection(db, "usernames"), where("uid", "==", userUid));
+  return getDocs(q)
+    .then((snapshot) => (snapshot.docs.length > 0 ? true : false))
+    .catch((err) => err);
 };

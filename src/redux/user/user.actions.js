@@ -8,7 +8,7 @@ export const logOutUser = (payload) => ({
   payload,
 });
 
-export const updateUserName = (payload) => ({
-  type: "UPDATE_USER_NAME",
+export const setHasUniqueUsername = (payload) => ({
+  type: "SET_HAS_UNIQUE_USERNAME",
   payload,
 });

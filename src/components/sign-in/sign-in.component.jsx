@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { handleSignIn } from "../../firebase/firebase.utils";
+import { logInUser } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
 import FormGroup from "../form-group/form-group.component";
 import "./sign-in.styles.scss";
@@ -12,8 +13,9 @@ const SignIn = ({ setHasAccount }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // log in user and change state to auth.
     handleSignIn(userInfo.email, userInfo.password)
+      .then((user) => logInUser(user))
+      .catch((err) => console.log(err));
   };
 
   const handleChange = (e) => {
