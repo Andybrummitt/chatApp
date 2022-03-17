@@ -4,7 +4,7 @@ import {
   checkUserNameAvailable,
   storeUserInDb,
   storeUsernameInDbAndUpdateProfile,
-} from "../../firebase/firebase.utils";
+} from "../../firebase/firebase-utils/firebase.auth.utils";
 import { logInUser, logOutUser } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
 import FormGroup from "../form-group/form-group.component";

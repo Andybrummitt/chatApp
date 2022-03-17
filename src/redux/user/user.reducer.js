@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   user: null,
-  hasUniqueUsername: true
+  hasUniqueUsername: true,
 };
 
 function userReducer(state = INITIAL_STATE, action) {
@@ -14,13 +14,13 @@ function userReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         user: null,
-        hasUniqueUsername: true
+        hasUniqueUsername: true,
       };
     case "SET_HAS_UNIQUE_USERNAME":
       return {
         ...state,
-        hasUniqueUsername: action.payload
-      }
+        hasUniqueUsername: action.payload,
+      };
     default:
       return state;
   }

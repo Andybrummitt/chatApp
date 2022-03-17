@@ -1,5 +1,5 @@
 import React from "react";
-import { handleGoogleSignIn } from "../../firebase/firebase.utils";
+import { handleGoogleSignIn } from "../../firebase/firebase-utils/firebase.auth.utils";
 import Button from "../button/button.component";
 
 const GoogleSignInBtn = ({ setError }) => {
@@ -15,7 +15,11 @@ const GoogleSignInBtn = ({ setError }) => {
   };
 
   return (
-    <Button onClick={handleSignIn} children={"Sign In With Google"} google={'google'} />
+    <Button
+      onClick={handleSignIn}
+      children={"Sign In With Google"}
+      google={"google"}
+    />
   );
 };
 

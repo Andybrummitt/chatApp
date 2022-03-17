@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/header/header.component";
-import { auth, checkUserNameLinked } from "./firebase/firebase.utils";
+import { auth, checkUserNameLinked } from "./firebase/firebase-utils/firebase.auth.utils";
 import CreateUsernamePage from "./pages/create-username/create-username.component";
 import HomePage from "./pages/homepage/homepage.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
@@ -76,8 +76,8 @@ function App({
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
-  hasUniqueUsername: state.hasUniqueUsername,
+  user: state.user.user,
+  hasUniqueUsername: state.user.hasUniqueUsername,
 });
 
 const mapDispatchToProps = (dispatch) => ({

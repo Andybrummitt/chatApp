@@ -19,20 +19,11 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDw2nLDZ7cIF5fL5_031wJaSU6w4vmbYZo",
-  authDomain: "chatapp-5471a.firebaseapp.com",
-  projectId: "chatapp-5471a",
-  storageBucket: "chatapp-5471a.appspot.com",
-  messagingSenderId: "559217520926",
-  appId: "1:559217520926:web:885e6277abeffe34ed190f",
-  measurementId: "G-JBDS03KWS7",
-};
+import firebaseConfig from "../firebase.config";
 
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
-const db = getFirestore();
+export const db = getFirestore();
 const analytics = getAnalytics(app);
 const provider = new GoogleAuthProvider();
 
@@ -42,6 +33,9 @@ export const handleGoogleSignIn = () => {
   return signInWithPopup(auth, provider)
     .then((result) => {
       const user = result.user;
+      setDoc(doc(db, "users", user.uid), {
+        chats: {},
+      });
       return user;
     })
     .catch((error) => {
@@ -54,6 +48,9 @@ export const storeUserInDb = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      setDoc(doc(db, "users", user.uid), {
+        chats: {},
+      });
       return user;
     })
     .catch((error) => {

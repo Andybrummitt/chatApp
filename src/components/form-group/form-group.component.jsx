@@ -1,17 +1,20 @@
 import React from "react";
-
-import './form-group.styles.scss'
+import "./form-group.styles.scss";
 
 const FormGroup = ({ handleChange, ...otherProps }) => {
-
   const { type, label } = otherProps;
 
   return (
     <div className="form-group">
-        <label htmlFor={type}>{`${label}:`}</label>
-        <input className="form-input" onChange={handleChange} {...otherProps} maxLength="40"/>    
+      <label htmlFor={type}>{`${label}:`}</label>
+      <input
+        className="form-input"
+        onChange={handleChange}
+        {...otherProps}
+        maxLength="40"
+      />
     </div>
-  )
+  );
 };
 
 export default FormGroup;

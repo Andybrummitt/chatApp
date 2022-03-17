@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { handleSignOut } from "../../firebase/firebase.utils";
+import ChatWindow from "../../components/chat-window/chat-window.component";
+import SearchUsername from "../../components/search-username/search-username.component";
+import UserProfile from "../../components/user-profile/user-profile.component";
+import { handleSignOut } from "../../firebase/firebase-utils/firebase.auth.utils";
+import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
+import "./homepage.styles.scss";
 
-const HomePage = ({ user }) => {
+const HomePage = ({ user, chatOpen, openChatWindow }) => {
+  const [searchedUserData, setSearchedUserData] = useState(null);
+
   return (
-    <div>
-      <div>HomePage: {user.displayName}</div>
+    <div className="homepage-container">
+      {chatOpen ? (
+        <ChatWindow />
+      ) : (
+        <>
+          <p>Logged in as {user.displayName}</p>
+          <SearchUsername
+            user={user}
+            setSearchedUserData={setSearchedUserData}
+          />
+          {searchedUserData && (
+            <UserProfile
+              searchedUserData={searchedUserData}
+              openChatWindow={openChatWindow}
+            />
+          )}
+        </>
+      )}
+
       <button className="sign-out" onClick={handleSignOut}>
         Sign Out
       </button>
@@ -14,7 +38,13 @@ const HomePage = ({ user }) => {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  user: state.user.user,
+  chatOpen: state.chat.chatOpen,
 });
 
-export default connect(mapStateToProps)(HomePage);
+const mapDispatchToProps = (dispatch) => ({
+  closeChatWindow: () => dispatch(closeChatWindow()),
+  openChatWindow: (otherUser) => dispatch(openChatWindow(otherUser)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePage);

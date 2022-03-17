@@ -5,7 +5,7 @@ import FormGroup from "../../components/form-group/form-group.component";
 import {
   checkUserNameAvailable,
   storeUsernameInDbAndUpdateProfile,
-} from "../../firebase/firebase.utils";
+} from "../../firebase/firebase-utils/firebase.auth.utils";
 import { setHasUniqueUsername } from "../../redux/user/user.actions";
 
 const CreateUsernamePage = ({ user, setHasUniqueUsername }) => {

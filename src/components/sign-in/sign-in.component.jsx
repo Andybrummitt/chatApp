@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { handleSignIn } from "../../firebase/firebase.utils";
+import { handleSignIn } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { logInUser } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
 import FormGroup from "../form-group/form-group.component";
