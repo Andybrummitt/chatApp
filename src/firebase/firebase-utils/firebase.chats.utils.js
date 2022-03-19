@@ -1,22 +1,30 @@
-import { collection, doc, getDoc, query, where } from "firebase/firestore";
+import { addDoc, collection, doc, DocumentReference, getDoc, getDocs, query, where, Timestamp } from "firebase/firestore";
 import { db } from "./firebase.auth.utils";
 
 export const getUserFromDb = async (searchedUsername) => {
     const usernameRef = doc(db, "usernames", searchedUsername);
-    const usernameSnap = await getDoc(usernameRef);
-    if (usernameSnap.exists()) {
-        return usernameSnap.data();
-      } else {
-        return new Error('User does not exist')
-      }
+    try {
+        const usernameSnap = await getDoc(usernameRef);
+        if (usernameSnap.exists()) {
+            return usernameSnap.data();
+          } else {
+            return new Error('User does not exist')
+          }
+    }
+    catch(err){
+        return err;
+    }
 }
 
-export const createNewChat = async (clientUser, searchedUserUid) => {
-    const { uid: userUid } = clientUser;
-    console.log(clientUser, searchedUserUid)
-    const clientUserQuery = query(collection(db, "users"), where("uid", "==", userUid));
-    const searchedUserQuery = query(collection(db, "users"), where("uid", "==", searchedUserUid))
-    //find uid from username typed in 
-    //create chat with this user and username typed in 
-    //handle errors
+export const sendMessage = async (clientUser, otherUser, message) => {
+    const { uid: clientUserUid, displayName: clientUsername } = clientUser;
+    const { uid: otherUserUid, username: otherUsername } = otherUser;
+    const chatId = clientUserUid > otherUserUid ? `${clientUserUid}${otherUserUid}` : `${otherUserUid}${clientUserUid}`;
+    const messageObj = {
+        message,
+        from: clientUsername,
+        to: otherUsername,
+        createdAt: Timestamp.fromDate(new Date())
+    }
+    addDoc(collection(db, "chats", chatId, "messages"), messageObj)
 }
