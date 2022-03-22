@@ -1,30 +1,37 @@
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
-import { sendMessage } from "../../firebase/firebase-utils/firebase.chats.utils";
+import {
+  createChatRoom,
+  sendMessage,
+} from "../../firebase/firebase-utils/firebase.chats.utils";
 import { closeChatWindow } from "../../redux/chat/chat.actions";
+import ChatMessage from "../chat-message/chat-message";
 import "./chat-window.styles.scss";
 
-const ChatWindow = ({ otherUser, clientUser }) => {
+const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+
+  const { uid: clientUserUid, displayName: clientUsername } = clientUser;
+  const { uid: otherUserUid, username: otherUsername } = otherUser;
+  const chatId =
+    clientUserUid > otherUserUid
+      ? `${clientUserUid}${otherUserUid}`
+      : `${otherUserUid}${clientUserUid}`;
 
   let unsubscribe;
 
   useEffect(() => {
+    (async () => await createChatRoom(chatId, clientUsername, otherUsername))();
     getMessages(clientUser, otherUser);
     return () => unsubscribe();
   }, []);
 
   const getMessages = async (clientUser, otherUser) => {
-    const { uid: clientUserUid } = clientUser;
-    const { uid: otherUserUid } = otherUser;
-    const chatId =
-      clientUserUid > otherUserUid
-        ? `${clientUserUid}${otherUserUid}`
-        : `${otherUserUid}${clientUserUid}`;
-
     const q = query(
       collection(db, "chats", chatId, "messages"),
       orderBy("createdAt")
@@ -42,7 +49,7 @@ const ChatWindow = ({ otherUser, clientUser }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendMessage(clientUser, otherUser, newMessage);
+    sendMessage(clientUser, otherUser, chatId, newMessage);
     setNewMessage("");
     //scroll to bottom
     //ref on most recent then scroll into view
@@ -50,17 +57,12 @@ const ChatWindow = ({ otherUser, clientUser }) => {
 
   return (
     <div className="chat-window-container">
+      <FontAwesomeIcon icon={faArrowLeft} onClick={closeChatWindow} size="2x" />
       <p>Chatting with {otherUser.username}</p>
       <div className="messages-container">
-        {chatMessages.map((message, index) => {
-          return (
-            <li key={index}>
-              <p>{message.message}</p>
-              <span>{message.from}</span>
-              <p>{message.createdAt.toDate().toString()}</p>
-            </li>
-          );
-        })}
+        {chatMessages.map((message, index) => (
+          <ChatMessage message={message} key={index} />
+        ))}
       </div>
       <form onSubmit={handleSubmit}>
         <input

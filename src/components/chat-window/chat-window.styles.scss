@@ -1,8 +1,8 @@
 .chat-window-container {
   height: 80vh;
-  width: 100%;
-  background: blue;
-  position: relative;
+  width: 100vw;
+  position: absolute;
+  left: 0;
   overflow: scroll;
 
   .messages-container {
@@ -12,7 +12,33 @@
   }
 
   form {
-      position: absolute;
-      bottom: 1%;
+    position: absolute;
+    bottom: 1%;
   }
+
+  .message-data-container {
+    padding: 0.5rem 0;
+    margin-bottom: 0.3rem;
+    margin-left: auto;
+    width: fit-content;
+
+    span {
+      display: block;
+    }
+    .message {
+      background: grey;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.5rem;
+      color: white;
+    }
+  }
+
+  .client-message {
+    margin-left: 0;
+
+    .message {
+      background: blue;
+    }
+  }
+
 }
