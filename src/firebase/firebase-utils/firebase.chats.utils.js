@@ -5,6 +5,7 @@ import {
   getDoc,
   setDoc,
   Timestamp,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase.auth.utils";
 
@@ -45,6 +46,10 @@ export const sendMessage = async (clientUser, otherUser, chatId, message) => {
   };
   try {
     await addDoc(collection(db, "chats", chatId, "messages"), messageObj);
+    const chatRef = doc(db, "chats", chatId)
+    await updateDoc(chatRef, {
+      lastMessage: messageObj
+    })
   } catch (err) {
     console.log(err);
   }

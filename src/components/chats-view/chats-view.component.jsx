@@ -11,34 +11,23 @@ const ChatsView = ({ user, openChatWindow }) => {
   const [chats, setChats] = useState([]);
   const [searchedUserData, setSearchedUserData] = useState();
 
-  let unsubscribe;
-
   useEffect(() => {
-    (async () => await getChats())();
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    console.log(chats);
-  }, [chats]);
-
-  const getChats = async () => {
-    const q = query(
+    const chatsQuery = query(
       collection(db, "chats"),
       where("users", "array-contains-any", [clientUsername])
     );
-    try {
-      unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let newChats = querySnapshot.docChanges();
-        newChats.forEach((newChat) => {
-          setChats((chats) => [...chats, newChat.doc.data()
-          ]);
-        });
+
+    //LISTENING FOR UPDATES ON DOCUMENTS WITH USERNAME IN DOCUMENT FIELD
+    const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
+      querySnapshot.forEach((chat) => {
+        setChats((prevChats) => [...prevChats, chat.data()]);
       });
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
     <div>
       <p>Logged in as {user.displayName}</p>
@@ -49,8 +38,15 @@ const ChatsView = ({ user, openChatWindow }) => {
           openChatWindow={openChatWindow}
         />
       )}
-      {chats ? <ul>{chats.map((chat, index) => <li key={index}>{JSON.stringify(chat)}</li>)}
-      </ul> : <p>No chats available</p>}
+      {chats ? (
+        <ul>
+          {chats.map((chat, index) => (
+            <li key={index}>{chat.lastMessage.message}</li>
+          ))}
+        </ul>
+      ) : (
+        <p>No chats available</p>
+      )}
     </div>
   );
 };
