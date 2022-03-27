@@ -5,7 +5,6 @@ import {
   getDoc,
   setDoc,
   Timestamp,
-  updateDoc,
 } from "firebase/firestore";
 import { db } from "./firebase.auth.utils";
 
@@ -23,18 +22,6 @@ export const getUserFromDb = async (searchedUsername) => {
   }
 };
 
-export const createChatRoom = async (chatId, clientUsername, otherUsername) => {
-    try {
-        const docRef = await doc(db, "chats", chatId)
-        setDoc(docRef, {
-            users: [clientUsername, otherUsername]
-        })
-    }
-    catch(err) {
-        console.log(err)
-    }
-};
-
 export const sendMessage = async (clientUser, otherUser, chatId, message) => {
   const { displayName: clientUsername } = clientUser;
   const { username: otherUsername } = otherUser;
@@ -45,11 +32,12 @@ export const sendMessage = async (clientUser, otherUser, chatId, message) => {
     createdAt: Timestamp.fromDate(new Date()),
   };
   try {
+    const docRef = await doc(db, "chats", chatId);
     await addDoc(collection(db, "chats", chatId, "messages"), messageObj);
-    const chatRef = doc(db, "chats", chatId)
-    await updateDoc(chatRef, {
-      lastMessage: messageObj
-    })
+    setDoc(docRef, {
+      users: [clientUsername, otherUsername],
+      lastMessage: messageObj,
+    });
   } catch (err) {
     console.log(err);
   }

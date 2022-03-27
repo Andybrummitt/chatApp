@@ -23,12 +23,11 @@ const SearchUsername = ({ user, setSearchedUserData }) => {
 
   return (
     <div className="search-username-container">
-        <p>Find friends...</p>
         <form onSubmit={handleSubmit}>
         <FormGroup
             name="username"
             type="text"
-            label="Search username"
+            placeholder="Search username"
             value={username}
             handleChange={(e) => setUsername(e.target.value)}
             required

@@ -4,10 +4,7 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
-import {
-  createChatRoom,
-  sendMessage,
-} from "../../firebase/firebase-utils/firebase.chats.utils";
+import { sendMessage } from "../../firebase/firebase-utils/firebase.chats.utils";
 import { closeChatWindow } from "../../redux/chat/chat.actions";
 import ChatMessage from "../chat-message/chat-message";
 import "./chat-window.styles.scss";
@@ -26,7 +23,6 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   let unsubscribe;
 
   useEffect(() => {
-    (async () => await createChatRoom(chatId, clientUsername, otherUsername))();
     getMessages(clientUser, otherUser);
     return () => unsubscribe();
   }, []);

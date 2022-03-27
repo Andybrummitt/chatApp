@@ -6,7 +6,7 @@ const FormGroup = ({ handleChange, ...otherProps }) => {
 
   return (
     <div className="form-group">
-      <label htmlFor={type}>{`${label}:`}</label>
+      {label && <label htmlFor={type}>{`${label}:`}</label>}
       <input
         className="form-input"
         onChange={handleChange}
