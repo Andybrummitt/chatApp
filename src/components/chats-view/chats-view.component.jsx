@@ -11,10 +11,11 @@ import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
 import SearchUsername from "../search-username/search-username.component";
 import UserProfile from "../user-profile/user-profile.component";
+import { v4 as uuidv4 } from 'uuid';
 
-const ChatsView = ({ user, openChatWindow }) => {
+const ChatsView = ({ user }) => {
   const { displayName: clientUsername } = user;
-  const [chats, setChats] = useState([]);
+  const [ chats, setChats ] = useState([])
   const [searchedUserData, setSearchedUserData] = useState({username: '', uid: null});
 
   useEffect(() => {
@@ -29,7 +30,10 @@ const ChatsView = ({ user, openChatWindow }) => {
         getDocs(collection(db, "chats", chat.id, "messages")).then(
           (snapshot) => {
             if (snapshot.size > 0) {
-              setChats((prevChats) => [...prevChats, chat.data()]);
+              setChats((prevChats) => {
+                const newChats = [...prevChats, chat.data()].sort((a, b) => b.lastMessage.createdAt - a.lastMessage.createdAt)
+                return newChats;
+              });
             }
           }
         );
@@ -39,7 +43,7 @@ const ChatsView = ({ user, openChatWindow }) => {
       unsubscribe();
     };
   }, []);
-
+  
   return (
     <div>
       <SearchUsername user={user} setSearchedUserData={setSearchedUserData} />
@@ -49,22 +53,20 @@ const ChatsView = ({ user, openChatWindow }) => {
           openChatWindow={openChatWindow}
         />
       )}
-      {chats.length > 0 ? (
         <ul>
-          {chats.map((chat, index) => (
+          {chats.map((chat) => {
+            return (
             <UserProfile
-              openChatWindow={openChatWindow}
               lastMessage={chat.lastMessage}
               chatUsers={chat.users}
               clientUser={user}
               searchedUserData={searchedUserData}
-              key={index}
-            />
-          ))}
+              key={uuidv4()}
+            /> 
+          )})
+          }
+          
         </ul>
-      ) : (
-        <p>No chats available</p>
-      )}
     </div>
   );
 };

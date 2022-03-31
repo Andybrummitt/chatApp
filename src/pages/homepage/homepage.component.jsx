@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import ChatWindow from "../../components/chat-window/chat-window.component";
 import ChatsView from "../../components/chats-view/chats-view.component";
@@ -8,7 +8,7 @@ import { handleSignOut } from "../../firebase/firebase-utils/firebase.auth.utils
 import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
 import "./homepage.styles.scss";
 
-const HomePage = ({ user, chatOpen, openChatWindow }) => {
+const HomePage = ({ user, chatOpen }) => {
 
   return (
     <div className="homepage-container">

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import defaultProfileImage from "../../assets/default-profile-image.png";
 import { getUserFromDb } from "../../firebase/firebase-utils/firebase.chats.utils";
+import { openChatWindow } from "../../redux/chat/chat.actions";
 import "./user-profile.styles.scss";
 
 const UserProfile = ({
@@ -14,6 +16,7 @@ const UserProfile = ({
   const [chatUserData, setChatUserData] = useState({username: '', uid: ''});
 
   useEffect(() => {
+    let isMounted = true;
     if (lastMessage) {
       //  IF OPENED FROM CHATS VIEW SET SEARCHEDUSERDATA AFTER DB QUERY
       const username = chatUsers.filter(
@@ -21,20 +24,23 @@ const UserProfile = ({
       )[0];
       getUserFromDb(username)
         .then((userdata) => {
-          setChatUserData({ ...userdata, username });
+          if(isMounted){
+            setChatUserData({ ...userdata, username });
+
+          }
         })
         .catch((err) => setError(err));
     }
+    return () => isMounted = false;
   }, []);
 
   return (
     <div
       className="user-profile-container"
-      onClick={() => {
-        chatUserData.username ? openChatWindow(chatUserData) : openChatWindow(searchedUserData)
-      }}
+      onClick={() => chatUserData.username ? openChatWindow(chatUserData) : openChatWindow(searchedUserData)}
     >
       <div className="profile-data">
+      {JSON.stringify(chatUsers)}
       <p className="error-message">{error.message}</p>
         <img
           className="profile-image"
@@ -47,4 +53,8 @@ const UserProfile = ({
   );
 };
 
-export default UserProfile;
+const mapDispatchToProps = (dispatch) => ({
+  openChatWindow: (user) => dispatch(openChatWindow(user))
+})
+
+export default connect(null, mapDispatchToProps)(UserProfile);
