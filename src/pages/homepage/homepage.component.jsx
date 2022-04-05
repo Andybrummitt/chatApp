@@ -12,14 +12,8 @@ const HomePage = ({ user, chatOpen }) => {
 
   return (
     <div className="homepage-container">
-      {chatOpen ? (
-        <ChatWindow />
-      ) : (
-        <>
-          <ChatsView user={user} />
-        </>
-      )}
-
+      {chatOpen && <ChatWindow /> }
+      <ChatsView user={user} chatOpen={chatOpen} />
       <button className="sign-out" onClick={handleSignOut}>
         Sign Out
       </button>

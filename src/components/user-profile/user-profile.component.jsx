@@ -10,10 +10,10 @@ const UserProfile = ({
   openChatWindow,
   lastMessage,
   chatUsers,
-  clientUser
+  clientUser,
 }) => {
   const [error, setError] = useState("");
-  const [chatUserData, setChatUserData] = useState({username: '', uid: ''});
+  const [chatUserData, setChatUserData] = useState({ username: "", uid: "" });
 
   useEffect(() => {
     let isMounted = true;
@@ -24,37 +24,52 @@ const UserProfile = ({
       )[0];
       getUserFromDb(username)
         .then((userdata) => {
-          if(isMounted){
+          if (isMounted) {
             setChatUserData({ ...userdata, username });
-
           }
         })
         .catch((err) => setError(err));
     }
-    return () => isMounted = false;
+    return () => (isMounted = false);
   }, []);
 
   return (
     <div
       className="user-profile-container"
-      onClick={() => chatUserData.username ? openChatWindow(chatUserData) : openChatWindow(searchedUserData)}
+      onClick={() =>
+        chatUserData.username
+          ? openChatWindow(chatUserData)
+          : openChatWindow(searchedUserData)
+      }
     >
       <div className="profile-data">
-      {JSON.stringify(chatUsers)}
-      <p className="error-message">{error.message}</p>
-        <img
-          className="profile-image"
-          src={defaultProfileImage}
-          alt="profile-image"
-        />
-        <p>{chatUserData.username ? chatUserData.username : searchedUserData.username ? searchedUserData.username : null}</p>
+        <p className="error-message">{error.message}</p>
+        <div className="user-data">
+          <img
+            className="profile-image"
+            src={defaultProfileImage}
+            alt="profile-image"
+          />
+          <p>
+            {chatUserData.username
+              ? chatUserData.username
+              : searchedUserData.username
+              ? searchedUserData.username
+              : null}
+          </p>
+        </div>
+        {lastMessage && (
+          <p className={`${lastMessage.unread ? "unread" : ""} last-message`}>
+            {lastMessage.message}
+          </p>
+        )}
       </div>
     </div>
   );
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  openChatWindow: (user) => dispatch(openChatWindow(user))
-})
+  openChatWindow: (user) => dispatch(openChatWindow(user)),
+});
 
 export default connect(null, mapDispatchToProps)(UserProfile);

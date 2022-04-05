@@ -1,5 +1,5 @@
 .profile-image {
-    height: 3rem;
+    height: 2rem;
     border-radius: 5rem;
     margin-right: 1rem;
 }
@@ -10,7 +10,16 @@
 }
 
 .user-profile-container {
-    background: blue;
-    padding: 1rem;
-    border-radius: 1rem;
+    padding: 0.5rem;
+    height: 75px;
+    border: 1px solid black;
+}
+
+.last-message {
+    color: black;
+    font-weight: bold;
+} 
+
+.unread {
+    color: red !important;
 }

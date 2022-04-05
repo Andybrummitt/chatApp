@@ -30,6 +30,7 @@ export const sendMessage = async (clientUser, otherUser, chatId, message) => {
     from: clientUsername,
     to: otherUsername,
     createdAt: Timestamp.fromDate(new Date()),
+    unread: true
   };
   try {
     const docRef = await doc(db, "chats", chatId);

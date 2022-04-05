@@ -1,0 +1,6 @@
+.chats-container {
+    overflow: hidden;
+    &.shrink {
+        height: 150px;
+    }
+}

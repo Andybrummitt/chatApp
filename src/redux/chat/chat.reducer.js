@@ -1,5 +1,8 @@
 const INITIAL_STATE = {
-  otherUser: null,
+  otherUser: {
+    username: null,
+    uid: null,
+  },
   chatOpen: false,
 };
 
@@ -15,7 +18,10 @@ function chatReducer(state = INITIAL_STATE, action) {
       return {
         ...state,
         chatOpen: false,
-        otherUser: null,
+        otherUser: {
+          username: null,
+          uid: null,
+        },
       };
     default:
       return state;

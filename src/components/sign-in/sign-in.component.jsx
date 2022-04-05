@@ -6,6 +6,8 @@ import FormGroup from "../form-group/form-group.component";
 import "./sign-in.styles.scss";
 
 const SignIn = ({ setHasAccount }) => {
+  const [error, setError] = useState(null);
+
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -14,8 +16,10 @@ const SignIn = ({ setHasAccount }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     handleSignIn(userInfo.email, userInfo.password)
-      .then((user) => logInUser(user))
-      .catch((err) => console.log(err));
+      .then((user) => {
+        logInUser(user);
+      })
+      .catch((err) => setError(err));
   };
 
   const handleChange = (e) => {
@@ -34,6 +38,7 @@ const SignIn = ({ setHasAccount }) => {
         I don't have an account
       </p>
       <h2 className="title">Sign In</h2>
+      {error && <p className="error-message">{error.message}</p>}
       <form onSubmit={handleSubmit}>
         <FormGroup
           name="email"

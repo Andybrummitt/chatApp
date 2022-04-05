@@ -1,6 +1,14 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  limit,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
@@ -23,24 +31,44 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   let unsubscribe;
 
   useEffect(() => {
-    getMessages(clientUser, otherUser);
+    getMessages();
     return () => unsubscribe();
   }, []);
 
-  const getMessages = async (clientUser, otherUser) => {
+  const getMessages = async () => {
     const q = query(
       collection(db, "chats", chatId, "messages"),
-      orderBy("createdAt")
+      orderBy("createdAt"),
+      limit(50)
     );
-    unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let newMessages = querySnapshot.docChanges();
-      newMessages.forEach((newMessage) => {
-        setChatMessages((chatMessages) => [
-          ...chatMessages,
-          newMessage.doc.data(),
-        ]);
+    try {
+      //  LISTEN FOR NEW MESSAGES
+      unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let newMessages = querySnapshot.docChanges();
+        newMessages.forEach((newMessage) => {
+          //  SET UNREAD IN DATABASE TO FALSE IF CHAT OPEN (HAS READ)
+          if (newMessage.doc.data().from === otherUser.username) {
+            const chatRef = doc(db, "chats", chatId);
+            setDoc(
+              chatRef,
+              {
+                lastMessage: {
+                  unread: false,
+                },
+              },
+              { merge: true }
+            );
+          }
+          //  SET MESSAGE STATE
+          setChatMessages((chatMessages) => [
+            ...chatMessages,
+            newMessage.doc.data(),
+          ]);
+        });
       });
-    });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleSubmit = (e) => {

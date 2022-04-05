@@ -1,8 +1,9 @@
 .chat-window-container {
-  height: 80vh;
+  height: 60vh;
   width: 100vw;
   position: absolute;
   left: 0;
+  top: 150px;
   overflow: scroll;
 
   .messages-container {
