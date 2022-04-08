@@ -18,7 +18,6 @@ const UserProfile = ({
   useEffect(() => {
     let isMounted = true;
     if (lastMessage) {
-      console.log(lastMessage.from, clientUser.displayName);
       //  IF OPENED FROM CHATS VIEW SET SEARCHEDUSERDATA AFTER DB QUERY
       const username = chatUsers.filter(
         (user) => user !== clientUser.displayName

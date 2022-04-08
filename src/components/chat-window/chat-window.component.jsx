@@ -9,7 +9,7 @@ import {
   query,
   setDoc,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { sendMessage } from "../../firebase/firebase-utils/firebase.chats.utils";
@@ -20,6 +20,8 @@ import "./chat-window.styles.scss";
 const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
+
+  const inputRef = useRef(null);
 
   const { uid: clientUserUid, displayName: clientUsername } = clientUser;
   const { uid: otherUserUid, username: otherUsername } = otherUser;
@@ -39,6 +41,17 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
       unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    //  FIX UI ON LAST MESSAGE AND FOCUS SEND MESSAGE INPUT FIELD
+    if(chatMessages.length > 0){
+      const lastMessage = document
+        .querySelector(".messages-container")
+        .lastElementChild;
+      lastMessage.scrollIntoView();
+    }
+    inputRef.current.focus();
+  }, [chatMessages]);
 
   const getMessages = async () => {
     const q = query(
@@ -82,8 +95,6 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
     e.preventDefault();
     sendMessage(clientUser, otherUser, chatId, newMessage);
     setNewMessage("");
-    //scroll to bottom
-    //ref on most recent then scroll into view
   };
 
   return (
@@ -97,6 +108,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
       </div>
       <form onSubmit={handleSubmit}>
         <input
+          ref={inputRef}
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
