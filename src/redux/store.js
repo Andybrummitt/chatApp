@@ -8,6 +8,7 @@ const rootReducer = combineReducers({
   chat: chatReducer,
 });
 
-export const store = createStore(rootReducer, applyMiddleware(logger));
+export const store = createStore(rootReducer);
+//, applyMiddleware(logger)
 
 // Logger with default options

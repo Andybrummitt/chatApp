@@ -18,6 +18,7 @@ const UserProfile = ({
   useEffect(() => {
     let isMounted = true;
     if (lastMessage) {
+      console.log(lastMessage.from, clientUser.displayName);
       //  IF OPENED FROM CHATS VIEW SET SEARCHEDUSERDATA AFTER DB QUERY
       const username = chatUsers.filter(
         (user) => user !== clientUser.displayName
@@ -59,7 +60,13 @@ const UserProfile = ({
           </p>
         </div>
         {lastMessage && (
-          <p className={`${lastMessage.unread ? "unread" : ""} last-message`}>
+          <p
+            className={`${
+              lastMessage.unread && lastMessage.from !== clientUser.displayName
+                ? "unread"
+                : ""
+            } last-message`}
+          >
             {lastMessage.message}
           </p>
         )}

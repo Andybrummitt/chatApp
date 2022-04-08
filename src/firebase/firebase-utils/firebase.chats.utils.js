@@ -25,6 +25,8 @@ export const getUserFromDb = async (searchedUsername) => {
 export const sendMessage = async (clientUser, otherUser, chatId, message) => {
   const { displayName: clientUsername } = clientUser;
   const { username: otherUsername } = otherUser;
+  const users = [clientUsername, otherUsername].sort((a,b) => b - a);
+
   const messageObj = {
     message,
     from: clientUsername,
@@ -36,7 +38,7 @@ export const sendMessage = async (clientUser, otherUser, chatId, message) => {
     const docRef = await doc(db, "chats", chatId);
     await addDoc(collection(db, "chats", chatId, "messages"), messageObj);
     setDoc(docRef, {
-      users: [clientUsername, otherUsername],
+      users,
       lastMessage: messageObj,
     });
   } catch (err) {

@@ -29,27 +29,32 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
       : `${otherUserUid}${clientUserUid}`;
 
   let unsubscribe;
+  let isMounted;
 
   useEffect(() => {
+    isMounted = true;
     getMessages();
-    return () => unsubscribe();
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
   }, []);
 
   const getMessages = async () => {
     const q = query(
       collection(db, "chats", chatId, "messages"),
-      orderBy("createdAt"),
-      limit(50)
+      orderBy("createdAt", "desc"),
+      limit(5)
     );
     try {
       //  LISTEN FOR NEW MESSAGES
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         let newMessages = querySnapshot.docChanges();
-        newMessages.forEach((newMessage) => {
+        newMessages.reverse().forEach(async (newMessage) => {
           //  SET UNREAD IN DATABASE TO FALSE IF CHAT OPEN (HAS READ)
           if (newMessage.doc.data().from === otherUser.username) {
             const chatRef = doc(db, "chats", chatId);
-            setDoc(
+            await setDoc(
               chatRef,
               {
                 lastMessage: {
@@ -60,10 +65,12 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
             );
           }
           //  SET MESSAGE STATE
-          setChatMessages((chatMessages) => [
-            ...chatMessages,
-            newMessage.doc.data(),
-          ]);
+          if (isMounted && newMessage.type === "added") {
+            setChatMessages((chatMessages) => [
+              ...chatMessages,
+              newMessage.doc.data(),
+            ]);
+          }
         });
       });
     } catch (err) {

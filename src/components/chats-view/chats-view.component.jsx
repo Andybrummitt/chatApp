@@ -30,25 +30,28 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
 
     //LISTENING FOR UPDATES ON DOCUMENTS WITH USERNAME IN DOCUMENT FIELD
     const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
+      let chatIds = [];
       querySnapshot.forEach((chat) => {
         getDocs(collection(db, "chats", chat.id, "messages")).then(
           (snapshot) => {
             //  IF CHAT HAS MESSAGES
             if (snapshot.size > 0) {
+              const { id } = chat;
+              const newChatObj = {...chat.data(), id}
               setChats((prevChats) => {
-                let chatUsers = [];
-                const newChats = [...prevChats, chat.data()]
+                const newChats = [...prevChats, newChatObj]
                   //  SORT IN ORDER OF LASTEST MESSAGE
                   .sort(
                     (a, b) => b.lastMessage.createdAt - a.lastMessage.createdAt
                   )
                   //  FILTER TO 1 CHAT BY EACH USER
                   .filter((chat) => {
-                    if (!chatUsers.includes(JSON.stringify(chat.users))) {
-                      chatUsers.push(JSON.stringify(chat.users));
+                    if (!chatIds.includes(chat.id)) {
+                      chatIds.push(chat.id);
                       return chat;
                     }
-                  });
+                  })
+                 
                 //  SET CHATS STATE
                 return newChats;
               });
@@ -63,7 +66,7 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
   }, []);
 
   return (
-    <div className={`${chatOpen && "shrink"} chats-container`}>
+    <div className={`${chatOpen ? "shrink" : ""} chats-container`}>
       {!chatOpen && (
         <SearchUsername user={user} setSearchedUserData={setSearchedUserData} />
       )}
@@ -75,7 +78,7 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
       )}
       <ul>
         {chats
-          .filter((chat) => !chat.users.includes(otherUser.username))
+          /* .filter((chat) => !chat.users.includes(otherUser.username)) */
           .map((chat) => {
             return (
               <UserProfile
