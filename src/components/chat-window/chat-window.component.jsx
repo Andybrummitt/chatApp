@@ -16,6 +16,7 @@ import { sendMessage } from "../../firebase/firebase-utils/firebase.chats.utils"
 import { closeChatWindow } from "../../redux/chat/chat.actions";
 import ChatMessage from "../chat-message/chat-message";
 import "./chat-window.styles.scss";
+import { v4 as uuidv4 } from "uuid";
 
 const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   const [newMessage, setNewMessage] = useState("");
@@ -44,10 +45,10 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
 
   useEffect(() => {
     //  FIX UI ON LAST MESSAGE AND FOCUS SEND MESSAGE INPUT FIELD
-    if(chatMessages.length > 0){
-      const lastMessage = document
-        .querySelector(".messages-container")
-        .lastElementChild;
+    if (chatMessages.length > 0) {
+      const lastMessage = document.querySelector(
+        ".messages-container"
+      ).lastElementChild;
       lastMessage.scrollIntoView();
     }
     inputRef.current.focus();
@@ -102,18 +103,47 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
       <FontAwesomeIcon icon={faArrowLeft} onClick={closeChatWindow} size="2x" />
       <p>Chatting with {otherUser.username}</p>
       <div className="messages-container">
-        {chatMessages.map((message, index) => (
-          <ChatMessage message={message} key={index} />
-        ))}
-      <form onSubmit={handleSubmit}>
-        <input
-          ref={inputRef}
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        />
-        <button type="submit">Send</button>
-      </form>
+        {chatMessages.map((message, index, arr) => {
+          //  GET DATE OF CURRENT MESSAGE
+          const currMessageDate = message.createdAt
+              .toDate()
+              .toLocaleDateString();
+          //  IF NO PREV MESSAGES DISPLAY CURRENT DATE
+          if (index === 0) {
+            return (
+                <React.Fragment key={uuidv4()}>
+                  <p className="date">{currMessageDate}</p>
+                  <ChatMessage message={message} />
+                </React.Fragment>
+              );
+          }
+          if (index !== 0) {
+            const prevMessage = arr[index - 1];
+            const prevDate = prevMessage.createdAt
+              .toDate()
+              .toLocaleDateString();
+          //  IF PREV MESSAGES BUT DATE CHANGED RETURN NEW DATE AND MESSAGE
+            if (prevDate !== currMessageDate) {
+              return (
+                <React.Fragment key={uuidv4()}>
+                  <p className="date">{currMessageDate}</p>
+                  <ChatMessage message={message}/>
+                </React.Fragment>
+              );
+            }
+            //  ELSE ONLY RETURN MESSAGE
+            else return <ChatMessage message={message} key={uuidv4()} />;
+          }
+        })}
+        <form onSubmit={handleSubmit}>
+          <input
+            ref={inputRef}
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+          />
+          <button type="submit">Send</button>
+        </form>
       </div>
     </div>
   );
