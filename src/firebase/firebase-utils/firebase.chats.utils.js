@@ -15,10 +15,10 @@ export const getUserFromDb = async (searchedUsername) => {
     if (usernameSnap.exists()) {
       return usernameSnap.data();
     } else {
-      return new Error("User does not exist");
+      throw new Error("User does not exist");
     }
   } catch (err) {
-    return err;
+    throw err;
   }
 };
 

@@ -14,9 +14,10 @@ import SearchUsername from "../search-username/search-username.component";
 import UserProfile from "../user-profile/user-profile.component";
 import "./chats-view.styles.scss";
 
-const ChatsView = ({ user, chatOpen, otherUser }) => {
+const ChatsView = ({ user, chatOpen }) => {
   const { displayName: clientUsername } = user;
   const [chats, setChats] = useState([]);
+  const [usernameFromSearch, setUsernameFromSearch] = useState("");
   const [searchedUserData, setSearchedUserData] = useState({
     username: "",
     uid: null,
@@ -30,14 +31,14 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
 
     //LISTENING FOR UPDATES ON DOCUMENTS WITH USERNAME IN DOCUMENT FIELD
     const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
-      let chatIds = [];
       querySnapshot.forEach((chat) => {
         getDocs(collection(db, "chats", chat.id, "messages")).then(
           (snapshot) => {
+            let chatIds = [];
             //  IF CHAT HAS MESSAGES
             if (snapshot.size > 0) {
               const { id } = chat;
-              const newChatObj = {...chat.data(), id}
+              const newChatObj = { ...chat.data(), id };
               setChats((prevChats) => {
                 const newChats = [...prevChats, newChatObj]
                   //  SORT IN ORDER OF LASTEST MESSAGE
@@ -50,8 +51,7 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
                       chatIds.push(chat.id);
                       return chat;
                     }
-                  })
-                 
+                  });
                 //  SET CHATS STATE
                 return newChats;
               });
@@ -68,7 +68,12 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
   return (
     <div className={`${chatOpen ? "shrink" : ""} chats-container`}>
       {!chatOpen && (
-        <SearchUsername user={user} setSearchedUserData={setSearchedUserData} />
+        <SearchUsername
+          user={user}
+          setSearchedUserData={setSearchedUserData}
+          usernameFromSearch={usernameFromSearch}
+          setUsernameFromSearch={setUsernameFromSearch}
+        />
       )}
       {!chatOpen && searchedUserData.username && (
         <UserProfile
@@ -78,7 +83,26 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
       )}
       <ul>
         {chats
-          /* .filter((chat) => !chat.users.includes(otherUser.username)) */
+          .filter(chat => {
+            //  IF USERNAME IS SEARCHED
+            if(usernameFromSearch){
+              //  GET OTHER USERNAME
+              const otherUsername = [...chat.users].filter(name => name !== user.displayName)[0];
+              const regex = new RegExp(usernameFromSearch, 'gm');
+              //  IF THE SEARCH MATCHES OTHER USERNAME RETURN THE CHAT TO DISPLAY USER PROFILE
+              if(otherUsername.match(regex)){
+                return chat;
+              }
+              //  IF NOT THEN RETURN NOTHING
+              else {
+                return;
+              }
+            //  IF USERNAME IS NOT SEARCHED JUST RETURN CHAT  
+            }
+            else {
+              return chat;
+            }
+          })
           .map((chat) => {
             return (
               <UserProfile
@@ -88,7 +112,7 @@ const ChatsView = ({ user, chatOpen, otherUser }) => {
                 searchedUserData={searchedUserData}
                 key={uuidv4()}
               />
-            );
+            )
           })}
       </ul>
     </div>

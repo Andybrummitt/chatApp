@@ -64,6 +64,13 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
       unsubscribe = onSnapshot(q, (querySnapshot) => {
         let newMessages = querySnapshot.docChanges();
         newMessages.reverse().forEach(async (newMessage) => {
+          //  SET MESSAGE STATE
+          if (isMounted && newMessage.type === "added") {
+            setChatMessages((chatMessages) => [
+              ...chatMessages,
+              newMessage.doc.data(),
+            ]);
+          }
           //  SET UNREAD IN DATABASE TO FALSE IF CHAT OPEN (HAS READ)
           if (newMessage.doc.data().from === otherUser.username) {
             const chatRef = doc(db, "chats", chatId);
@@ -76,13 +83,6 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
               },
               { merge: true }
             );
-          }
-          //  SET MESSAGE STATE
-          if (isMounted && newMessage.type === "added") {
-            setChatMessages((chatMessages) => [
-              ...chatMessages,
-              newMessage.doc.data(),
-            ]);
           }
         });
       });
@@ -105,7 +105,6 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
         {chatMessages.map((message, index) => (
           <ChatMessage message={message} key={index} />
         ))}
-      </div>
       <form onSubmit={handleSubmit}>
         <input
           ref={inputRef}
@@ -115,6 +114,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
         />
         <button type="submit">Send</button>
       </form>
+      </div>
     </div>
   );
 };
