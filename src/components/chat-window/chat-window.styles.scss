@@ -1,24 +1,23 @@
 .chat-window-container {
-  height: 85vh;
+  height: 450px;
   width: 100vw;
-  position: absolute;
-  left: 0;
-  top: 30px;
-  padding: 0.25rem;
+  position: relative;
+  padding: 0 0.25rem;
+  border: 1px solid black;
 
   .messages-container {
-    padding: 0.25rem;
-    position: relative;
-    overflow: scroll;
     height: 90%;
-    border: 1px solid black;
-    
+    padding: 0 0.25rem;
+    margin-bottom: 3rem;
+    overflow: scroll;
   }
 
   form {
     position: absolute;
-    bottom: 1%;
-    width: 95%;
+    bottom: 2%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
 
     input {
