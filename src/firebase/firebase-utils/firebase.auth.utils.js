@@ -1,6 +1,7 @@
 import { getAnalytics } from "firebase/analytics";
 import {
   createUserWithEmailAndPassword,
+  deleteUser,
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -11,6 +12,7 @@ import {
 import firebase from "firebase/compat/app";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -111,4 +113,17 @@ export const checkUserNameLinked = async (user) => {
   return getDocs(q)
     .then((snapshot) => (snapshot.docs.length > 0 ? true : false))
     .catch((err) => err);
+};
+
+export const deleteAccount = () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+  return deleteUser(user)
+    .then(async () => {
+      await deleteDoc(doc(db, "usernames", user.displayName));
+      return;
+    })
+    .catch((error) => {
+      throw error;
+    });
 };

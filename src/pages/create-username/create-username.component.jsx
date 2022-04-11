@@ -51,7 +51,7 @@ const CreateUsernamePage = ({ user, setHasUniqueUsername }) => {
 };
 
 const mapStateToProps = (state) => ({
-  user: state.user,
+  user: state.user.user,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
+import AccountPage from "./components/AccountPage/AccountPage.component";
 import Header from "./components/header/header.component";
 import { auth, checkUserNameLinked } from "./firebase/firebase-utils/firebase.auth.utils";
 import CreateUsernamePage from "./pages/create-username/create-username.component";
@@ -70,6 +71,7 @@ function App({
             )
           }
         />
+        <Route exact path="/account" element={user ? <AccountPage /> : <Navigate to="/"/>} />
       </Routes>
     </div>
   );
