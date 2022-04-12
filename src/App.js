@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
 import AccountPage from "./components/AccountPage/AccountPage.component";
 import Header from "./components/header/header.component";
-import { auth, checkUserNameLinked } from "./firebase/firebase-utils/firebase.auth.utils";
+import {
+  auth,
+  checkUserNameLinked,
+} from "./firebase/firebase-utils/firebase.auth.utils";
 import CreateUsernamePage from "./pages/create-username/create-username.component";
 import HomePage from "./pages/homepage/homepage.component";
 import SignInSignUpPage from "./pages/sign-in-sign-up/sign-in-sign-up.component";
@@ -14,6 +17,8 @@ import {
   setHasUniqueUsername,
 } from "./redux/user/user.actions";
 
+export const ThemeContext = createContext();
+
 function App({
   user,
   hasUniqueUsername,
@@ -21,9 +26,15 @@ function App({
   logInUser,
   logOutUser,
 }) {
+
+  const [ darkMode, setDarkMode ] = useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode)
+  }
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      console.log("AUTH STATE CHANGED");
       if (user) {
         logInUser(user);
         checkUserNameLinked(user)
@@ -39,41 +50,47 @@ function App({
   }, []);
 
   return (
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route
-          exact
-          path="/"
-          element={
-            user !== null && !hasUniqueUsername ? (
-              <Navigate to="/createusername" />
-            ) : user === null ? (
-              <SignInSignUpPage />
-            ) : (
-              <HomePage />
-            )
-          }
-        />
-        <Route
-          exact
-          path="/signin"
-          element={user ? <Navigate to="/" /> : <SignInSignUpPage />}
-        />
-        <Route
-          exact
-          path="/createusername"
-          element={
-            user !== null && !hasUniqueUsername ? (
-              <CreateUsernamePage />
-            ) : (
-              <Navigate to="/" />
-            )
-          }
-        />
-        <Route exact path="/account" element={user ? <AccountPage /> : <Navigate to="/"/>} />
-      </Routes>
-    </div>
+    <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={
+              user !== null && !hasUniqueUsername ? (
+                <Navigate to="/createusername" />
+              ) : user === null ? (
+                <SignInSignUpPage />
+              ) : (
+                <HomePage />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/signin"
+            element={user ? <Navigate to="/" /> : <SignInSignUpPage />}
+          />
+          <Route
+            exact
+            path="/createusername"
+            element={
+              user !== null && !hasUniqueUsername ? (
+                <CreateUsernamePage />
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/account"
+            element={user ? <AccountPage /> : <Navigate to="/" />}
+          />
+        </Routes>
+      </div>
+    </ThemeContext.Provider>
   );
 }
 

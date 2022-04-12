@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { ThemeContext } from "../../App";
 import ChatWindow from "../../components/chat-window/chat-window.component";
 import ChatsView from "../../components/chats-view/chats-view.component";
 import SearchUsername from "../../components/search-username/search-username.component";
@@ -10,8 +11,10 @@ import "./homepage.styles.scss";
 
 const HomePage = ({ user, chatOpen }) => {
 
+  const { darkMode } = useContext(ThemeContext);
+
   return (
-    <div className="homepage-container">
+    <div className={`homepage-container ${darkMode ? 'dark' : ''}`}>
       {chatOpen ? <ChatWindow /> : <ChatsView user={user} chatOpen={chatOpen} />}
       <button className="sign-out" onClick={handleSignOut}>
         Sign Out

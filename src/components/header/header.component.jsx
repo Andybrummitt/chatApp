@@ -1,17 +1,32 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import Switch from "react-switch";
+import { ThemeContext } from "../../App";
 import "./header.styles.scss";
 
 const Header = (user) => {
+  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+
   return (
     <div className="header">
       <nav>
         <Link to="/" className="nav-link logo-icon">
-          Logo
+          <p className="title">Chatty</p>
         </Link>
+        <form className="switch-slider">
+          <Switch
+            onChange={toggleDarkMode}
+            checked={darkMode}
+            checkedIcon={false}
+            uncheckedIcon={false}
+            offColor={"#e4e6eb"}
+            onColor={"#3a3b3c"}
+          />
+          <label>Dark Mode</label>
+        </form>
         <Link
           to={user.user ? "/account" : "/"}
           className="nav-link account-link"

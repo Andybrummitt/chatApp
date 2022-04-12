@@ -1,6 +1,20 @@
 .homepage-container {
     width: 100vw;
+    height: 90vh;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    input {
+        border: 1px solid black;
+    }
+
+    &.dark {
+        background: #3a3b3c;
+        color: white;
+        input {
+            background: #666666;
+            color: white;
+        }
+    }
 }
