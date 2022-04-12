@@ -1,9 +1,18 @@
+.back-arrow-icon {
+  margin: 0.5rem 0;
+}
+
+.chat-title {
+  text-align: center;
+}
+
 .chat-window-container {
   height: 450px;
-  width: 100vw;
+  width: 260px;
+  margin: 1rem auto;
   position: relative;
   padding: 0 0.25rem;
-  border: 1px solid black;
+  border: 0.1rem solid black;
 
   .messages-container {
     height: 90%;
@@ -15,7 +24,7 @@
   form {
     position: absolute;
     bottom: 2%;
-    width: 90%;
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
     display: flex;
@@ -23,9 +32,16 @@
     input {
       width: 80%;
       padding: 0.25rem;
+      height: 30px;
+      border-radius: 0.2rem;
     }
     button {
       width: 20%;
+      border: none;
+      height: 30px;
+      margin-left: 0.2rem;
+      background: #25e88a;
+      border-radius: 0.2rem;
     }
   }
 
@@ -59,4 +75,13 @@
     margin: 1rem 0;
   }
 
+}
+
+//  DARK MODE 
+
+.chat-window-container {
+
+  &.dark {
+    border: 0.1rem solid white;
+  }
 }

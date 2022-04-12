@@ -1,3 +1,13 @@
 .search-username-container {
     padding: 1rem 0;
+
+    form {
+        input {
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+            height: 30px;
+        }
+    }
 }
+

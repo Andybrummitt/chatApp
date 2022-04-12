@@ -81,25 +81,27 @@ const ChatsView = ({ user, chatOpen }) => {
           openChatWindow={openChatWindow}
         />
       )}
+      {chats.length > 0 && <h2 className="chats-title">Chats</h2>}
       <ul>
         {chats
-          .filter(chat => {
+          .filter((chat) => {
             //  IF USERNAME IS SEARCHED
-            if(usernameFromSearch){
+            if (usernameFromSearch) {
               //  GET OTHER USERNAME
-              const otherUsername = [...chat.users].filter(name => name !== user.displayName)[0];
-              const regex = new RegExp(usernameFromSearch, 'gm');
+              const otherUsername = [...chat.users].filter(
+                (name) => name !== user.displayName
+              )[0];
+              const regex = new RegExp(usernameFromSearch, "gm");
               //  IF THE SEARCH MATCHES OTHER USERNAME RETURN THE CHAT TO DISPLAY USER PROFILE
-              if(otherUsername.match(regex)){
+              if (otherUsername.match(regex)) {
                 return chat;
               }
               //  IF NOT THEN RETURN NOTHING
               else {
                 return;
               }
-            //  IF USERNAME IS NOT SEARCHED JUST RETURN CHAT  
-            }
-            else {
+              //  IF USERNAME IS NOT SEARCHED JUST RETURN CHAT
+            } else {
               return chat;
             }
           })
@@ -112,7 +114,7 @@ const ChatsView = ({ user, chatOpen }) => {
                 searchedUserData={searchedUserData}
                 key={uuidv4()}
               />
-            )
+            );
           })}
       </ul>
     </div>

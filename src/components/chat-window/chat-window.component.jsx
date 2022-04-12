@@ -9,9 +9,10 @@ import {
   query,
   setDoc,
 } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { ThemeContext } from "../../App";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { sendMessage } from "../../firebase/firebase-utils/firebase.chats.utils";
 import { closeChatWindow } from "../../redux/chat/chat.actions";
@@ -19,6 +20,9 @@ import ChatMessage from "../chat-message/chat-message";
 import "./chat-window.styles.scss";
 
 const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
+
+  const { darkMode } = useContext(ThemeContext);
+
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -99,10 +103,10 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   };
 
   return (
-    <div className="chat-window">
-      <FontAwesomeIcon icon={faArrowLeft} onClick={closeChatWindow} size="2x" />
-      <p>Chatting with {otherUser.username}</p>
-      <div className="chat-window-container">
+    <div className='chat-window'>
+      <FontAwesomeIcon className="back-arrow-icon" icon={faArrowLeft} onClick={closeChatWindow} size="2x" />
+      <p className="chat-title">Chatting with {otherUser.username}</p>
+      <div className={`chat-window-container ${darkMode ? 'dark' : ''}`}>
         <div className="messages-container">
           {chatMessages.map((message, index, arr) => {
             //  GET DATE OF CURRENT MESSAGE
