@@ -14,7 +14,6 @@ const FormGroup = ({ handleChange, ...otherProps }) => {
         className={`form-input ${darkMode ? 'dark' : ''}`}
         onChange={handleChange}
         {...otherProps}
-        maxLength="40"
       />
     </div>
   );

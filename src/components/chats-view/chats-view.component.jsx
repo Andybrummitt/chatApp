@@ -5,9 +5,10 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
+import { ThemeContext } from "../../App";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
 import SearchUsername from "../search-username/search-username.component";
@@ -15,6 +16,9 @@ import UserProfile from "../user-profile/user-profile.component";
 import "./chats-view.styles.scss";
 
 const ChatsView = ({ user, chatOpen }) => {
+
+  const { darkMode } = useContext(ThemeContext);
+
   const { displayName: clientUsername } = user;
   const [chats, setChats] = useState([]);
   const [usernameFromSearch, setUsernameFromSearch] = useState("");

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { ThemeContext } from "../../App";
 import defaultProfileImage from "../../assets/default-profile-image.png";
 import { getUserFromDb } from "../../firebase/firebase-utils/firebase.chats.utils";
 import { openChatWindow } from "../../redux/chat/chat.actions";
@@ -14,6 +15,8 @@ const UserProfile = ({
 }) => {
   const [error, setError] = useState("");
   const [chatUserData, setChatUserData] = useState({ username: "", uid: "" });
+
+  const { darkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     let isMounted = true;
@@ -33,6 +36,11 @@ const UserProfile = ({
     return () => (isMounted = false);
   }, []);
 
+  const messageDisplay = (msg) => {
+    if(msg.length <= 15) return msg;
+    return msg.substring(0,12).concat('...');
+  } 
+
   return (
     <div
       className="user-profile-container"
@@ -44,31 +52,31 @@ const UserProfile = ({
     >
       <div className="profile-data">
         <p className="error-message">{error.message}</p>
-        <div className="user-data">
           <img
             className="profile-image"
             src={defaultProfileImage}
             alt="profile-image"
           />
-          <p>
+        <div className="user-data">
+          <p className="username">
             {chatUserData.username
               ? chatUserData.username
               : searchedUserData.username
               ? searchedUserData.username
               : null}
           </p>
-        </div>
         {lastMessage && (
           <p
             className={`${
               lastMessage.unread && lastMessage.from !== clientUser.displayName
                 ? "unread"
                 : ""
-            } last-message`}
+            } last-message ${darkMode ? 'dark' : ''}`}
           >
-            {lastMessage.message}
+            {`${lastMessage.from === clientUser.displayName ? 'You:' : ''} ${messageDisplay(lastMessage.message)}`}
           </p>
         )}
+        </div>
       </div>
     </div>
   );

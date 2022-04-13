@@ -18,7 +18,9 @@
     height: 90%;
     padding: 0 0.25rem;
     margin-bottom: 3rem;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    word-wrap: break-word;
   }
 
   form {
@@ -29,16 +31,15 @@
     margin-right: auto;
     display: flex;
 
-    input {
+    .message-input {
       width: 80%;
       padding: 0.25rem;
-      height: 30px;
       border-radius: 0.2rem;
     }
     button {
       width: 20%;
       border: none;
-      height: 30px;
+      height: 25px;
       margin-left: 0.2rem;
       background: #25e88a;
       border-radius: 0.2rem;
@@ -50,6 +51,7 @@
     margin-bottom: 0.3rem;
     margin-left: auto;
     width: fit-content;
+    max-width: 100%;
 
     span {
       display: block;

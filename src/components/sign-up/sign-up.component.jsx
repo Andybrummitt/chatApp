@@ -86,6 +86,7 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
           label="email"
           value={userInfo.email}
           handleChange={handleChange}
+          maxLength={40}
           required
         />
         <FormGroup
@@ -94,6 +95,7 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
           label="password"
           value={userInfo.password}
           handleChange={handleChange}
+          maxLength={20}
           required
         />
         <FormGroup
@@ -102,6 +104,7 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
           label="confirm password"
           value={userInfo.confirmPassword}
           handleChange={handleChange}
+          maxLength={20}
           required
         />
         <FormGroup
@@ -110,6 +113,7 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
           label="display name"
           value={userInfo.displayName}
           handleChange={handleChange}
+          maxLength={15}
           required
         />
         <Button children="Sign Up" type="submit" />

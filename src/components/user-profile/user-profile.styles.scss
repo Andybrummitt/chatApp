@@ -1,5 +1,14 @@
+.user-profile-container {
+    padding: 0.5rem;
+    height: 90px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    margin: 0.1rem 0;
+}
+
 .profile-image {
-    height: 2rem;
+    height: 4rem;
     border-radius: 5rem;
     margin-right: 1rem;
 }
@@ -9,15 +18,27 @@
     align-items: center;
 }
 
-.user-profile-container {
-    padding: 0.5rem;
-    height: 75px;
-    border: 1px solid black;
+.user-data {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.username {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
 
 .last-message {
     color: black;
-    font-weight: bold;
+
+    &.dark {
+        color: white;
+        opacity: 0.8;
+    }
 } 
 
 .unread {

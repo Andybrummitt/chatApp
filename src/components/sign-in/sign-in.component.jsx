@@ -46,6 +46,7 @@ const SignIn = ({ setHasAccount }) => {
           label="email"
           value={email}
           handleChange={handleChange}
+          maxLength={40}
           required
         />
         <FormGroup
@@ -54,6 +55,7 @@ const SignIn = ({ setHasAccount }) => {
           label="password"
           value={password}
           handleChange={handleChange}
+          maxLength={20}
           required
         />
         <Button type="submit" children="Sign In" />

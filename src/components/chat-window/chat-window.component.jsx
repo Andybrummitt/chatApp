@@ -1,5 +1,6 @@
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import TextareaAutosize from "@mui/base/TextareaAutosize";
 import {
   collection,
   doc,
@@ -20,7 +21,6 @@ import ChatMessage from "../chat-message/chat-message";
 import "./chat-window.styles.scss";
 
 const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
-
   const { darkMode } = useContext(ThemeContext);
 
   const [newMessage, setNewMessage] = useState("");
@@ -103,10 +103,15 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   };
 
   return (
-    <div className='chat-window'>
-      <FontAwesomeIcon className="back-arrow-icon" icon={faArrowLeft} onClick={closeChatWindow} size="2x" />
+    <div className="chat-window">
+      <FontAwesomeIcon
+        className="back-arrow-icon"
+        icon={faArrowLeft}
+        onClick={closeChatWindow}
+        size="2x"
+      />
       <p className="chat-title">Chatting with {otherUser.username}</p>
-      <div className={`chat-window-container ${darkMode ? 'dark' : ''}`}>
+      <div className={`chat-window-container ${darkMode ? "dark" : ""}`}>
         <div className="messages-container">
           {chatMessages.map((message, index, arr) => {
             //  GET DATE OF CURRENT MESSAGE
@@ -142,11 +147,21 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
           })}
         </div>
         <form onSubmit={handleSubmit}>
-          <input
+          <TextareaAutosize
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
+            maxRows={2}
+            aria-label="maximum height"
+            style={{ width: 200 }}
             ref={inputRef}
-            type="text"
+            className="message-input"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            maxLength={300}
           />
           <button type="submit">Send</button>
         </form>
