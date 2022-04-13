@@ -1,0 +1,62 @@
+.account-page-container {
+    padding: 0.5rem;
+    height: 90vh;
+
+    &.dark {
+        background: #3a3b3c;
+        color: white;
+    }
+}
+
+h2 {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.account-options {
+    padding: 1rem;
+    width: 200px;
+    margin: 0 auto;
+
+    li {
+        list-style-type: none;
+        padding: 0.5rem;
+        text-align: center;
+        cursor: pointer;
+        background: red;
+        color: white;
+    }
+
+    :first-child {
+        background: #f4f4f4;
+        color: black;
+    }
+}
+
+.delete-prompt-container {
+    border: 0.1rem solid red;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .delete-options-btns {
+        margin-top: 0.5rem;
+
+        button {
+            border: none;
+            padding: 0.5rem;
+            font-size: 1rem;
+            color: white;
+            background: #25e88a;
+        }
+        
+        :first-child {
+            background: red;
+        }
+        
+    }   
+}
+
