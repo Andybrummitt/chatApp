@@ -5,10 +5,9 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { ThemeContext } from "../../App";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
 import SearchUsername from "../search-username/search-username.component";
@@ -16,9 +15,6 @@ import UserProfile from "../user-profile/user-profile.component";
 import "./chats-view.styles.scss";
 
 const ChatsView = ({ user, chatOpen }) => {
-
-  const { darkMode } = useContext(ThemeContext);
-
   const { displayName: clientUsername } = user;
   const [chats, setChats] = useState([]);
   const [usernameFromSearch, setUsernameFromSearch] = useState("");
@@ -69,6 +65,16 @@ const ChatsView = ({ user, chatOpen }) => {
     };
   }, []);
 
+  const searchedUserNotInChats = (searchedUserDataName) => {
+    let notInChats = true;
+    chats.forEach((chat) => {
+      if (chat.users.includes(searchedUserDataName)) {
+        notInChats = false;
+      }
+    });
+    return notInChats;
+  };
+
   return (
     <div className={`${chatOpen ? "shrink" : ""} chats-container`}>
       {!chatOpen && (
@@ -79,12 +85,15 @@ const ChatsView = ({ user, chatOpen }) => {
           setUsernameFromSearch={setUsernameFromSearch}
         />
       )}
-      {!chatOpen && searchedUserData.username && (
+      {/* IF USER IS SEARCHED AND IS NOT ALREADY IN CHATS LIST RETURN SEARCHED USER PROFILE */}
+      {!chatOpen &&
+      searchedUserData.username &&
+      searchedUserNotInChats(searchedUserData.username) ? (
         <UserProfile
           searchedUserData={searchedUserData}
           openChatWindow={openChatWindow}
         />
-      )}
+      ) : null}
       {chats.length > 0 && <h2 className="chats-title">Chats</h2>}
       <ul>
         {chats

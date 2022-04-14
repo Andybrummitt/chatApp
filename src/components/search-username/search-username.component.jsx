@@ -22,7 +22,11 @@ const SearchUsername = ({
           setError("");
           setUsernameFromSearch("");
         })
-        .catch((err) => setError(err));
+        .catch((err) => {
+          setSearchedUserData("");
+          setUsernameFromSearch("");
+          setError(err)
+        });
     }
     //  SHOW MESSAGES SHOWING NO USERS FOUND
   };
