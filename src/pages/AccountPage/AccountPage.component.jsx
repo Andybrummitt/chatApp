@@ -18,7 +18,7 @@ const AccountPage = () => {
   return (
     <div className={`account-page-container ${darkMode ? 'dark' : ''}`}>
       <h2>My Account</h2>
-      {error && <p>{error.message}</p>}
+      {error && <p className="error-message">{error.message}</p>}
       <ul className="account-options">
         <li onClick={handleSignOut}>Sign out</li>
         <li onClick={setShowDeletePrompt}>Delete Account</li>

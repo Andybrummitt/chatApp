@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
+import { sendWelcomeMessage } from "../../firebase/firebase-utils/firebase.chats.utils";
 import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
 import SearchUsername from "../search-username/search-username.component";
 import UserProfile from "../user-profile/user-profile.component";
@@ -29,6 +30,10 @@ const ChatsView = ({ user, chatOpen }) => {
       collection(db, "chats"),
       where("users", "array-contains-any", [clientUsername])
     );
+
+    //  CALL WELCOME FUNCTION (MESSAGE FROM DEV)
+    sendWelcomeMessage(user)
+      .catch(err => setError(err))
 
     //LISTENING FOR UPDATES ON DOCUMENTS WITH USERNAME IN DOCUMENT FIELD
     const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {

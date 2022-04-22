@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { ThemeContext } from "../../App";
 import ChatWindow from "../../components/chat-window/chat-window.component";
 import ChatsView from "../../components/chats-view/chats-view.component";
-import { handleSignOut } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { closeChatWindow, openChatWindow } from "../../redux/chat/chat.actions";
 import "./homepage.styles.scss";
 
