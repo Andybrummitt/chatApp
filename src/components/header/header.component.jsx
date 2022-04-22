@@ -18,6 +18,7 @@ const Header = (user) => {
         </Link>
         <form className="switch-slider">
           <Switch
+            className="switch"
             onChange={toggleDarkMode}
             checked={darkMode}
             checkedIcon={false}
@@ -31,7 +32,7 @@ const Header = (user) => {
           to={user.user ? "/account" : "/"}
           className="nav-link account-link"
         >
-          <FontAwesomeIcon icon={faUser} size="2x" />
+          <FontAwesomeIcon className="account-icon" icon={faUser} size="2x" />
         </Link>
       </nav>
     </div>

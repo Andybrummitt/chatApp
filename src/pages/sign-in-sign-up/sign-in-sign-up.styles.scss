@@ -7,4 +7,12 @@
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
+
+    &.dark {
+        color: white;
+
+        input {
+            color: white;
+        }
+    }
 }

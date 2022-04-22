@@ -1,13 +1,16 @@
 .sign-up {
     max-width: 600px;
     width: 90%;
+    @media only screen and (min-width: 1000px) {
+        font-size: 1.2rem;
+    }
 
     .title {
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
     }
 
     .go-to-signin {
-        margin-bottom: 1rem;
+        margin-bottom: 1em;
         color: blue;
         text-decoration: underline;
         cursor: pointer;

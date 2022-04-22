@@ -1,8 +1,14 @@
+@import '../../shared-styles.scss';
+
 .chats-container {
     overflow: hidden;
     &.shrink {
         height: 150px;
     }
+    max-width: 800px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .chats-title {

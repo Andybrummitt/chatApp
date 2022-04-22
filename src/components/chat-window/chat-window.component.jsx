@@ -23,6 +23,7 @@ import "./chat-window.styles.scss";
 const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   const { darkMode } = useContext(ThemeContext);
 
+  const [error, setError] = useState('');
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
 
@@ -90,15 +91,20 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
             );
           }
         });
-      });
+      }, (err) => setError(err));
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendMessage(clientUser, otherUser, chatId, newMessage);
+    try {
+      sendMessage(clientUser, otherUser, chatId, newMessage);
+    }
+    catch(err){
+      setError(err);
+    }
     setNewMessage("");
   };
 
@@ -110,6 +116,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
         onClick={closeChatWindow}
         size="2x"
       />
+      {error && <p className="error-message">{error.message}</p>}
       <p className="chat-title">Chatting with {otherUser.username}</p>
       <div className={`chat-window-container ${darkMode ? "dark" : ""}`}>
         <div className="messages-container">
@@ -156,7 +163,6 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
             }}
             maxRows={2}
             aria-label="maximum height"
-            style={{ width: 200 }}
             ref={inputRef}
             className="message-input"
             value={newMessage}

@@ -18,8 +18,8 @@ const SearchUsername = ({
     if (usernameFromSearch !== user.displayName) {
       getUserFromDb(usernameFromSearch)
         .then((userdata) => {
-          setSearchedUserData({ ...userdata, username: usernameFromSearch });
           setError("");
+          setSearchedUserData({ ...userdata, username: usernameFromSearch });
           setUsernameFromSearch("");
         })
         .catch((err) => {
@@ -39,7 +39,10 @@ const SearchUsername = ({
           type="text"
           placeholder="Search username"
           value={usernameFromSearch}
-          handleChange={(e) => setUsernameFromSearch(e.target.value)}
+          handleChange={(e) => {
+            setUsernameFromSearch(e.target.value)
+            setError('')
+            }}
           required
         />
         <Button type="submit" children="Search" />

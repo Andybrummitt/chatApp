@@ -22,6 +22,7 @@ const ChatsView = ({ user, chatOpen }) => {
     username: "",
     uid: null,
   });
+  const [ error, setError ] = useState('');
 
   useEffect(() => {
     const chatsQuery = query(
@@ -52,12 +53,14 @@ const ChatsView = ({ user, chatOpen }) => {
                       return chat;
                     }
                   });
+                setError('');
                 //  SET CHATS STATE
                 return newChats;
               });
             }
           }
-        );
+        )
+        .catch(error => setError(error));
       });
     });
     return () => {
@@ -96,6 +99,7 @@ const ChatsView = ({ user, chatOpen }) => {
       ) : null}
       {chats.length > 0 && <h2 className="chats-title">Chats</h2>}
       <ul>
+        {error && <p className="error-message">{error.message}</p>}
         {chats
           .filter((chat) => {
             //  IF USERNAME IS SEARCHED

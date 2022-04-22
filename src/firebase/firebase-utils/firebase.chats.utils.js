@@ -42,6 +42,6 @@ export const sendMessage = async (clientUser, otherUser, chatId, message) => {
       lastMessage: messageObj,
     });
   } catch (err) {
-    console.log(err);
+     throw err;
   }
 };

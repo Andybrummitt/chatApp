@@ -72,7 +72,10 @@ export const storeUsernameInDbAndUpdateProfile = async (user, username) => {
         displayName: username,
       })
     )
-    .then(() => user);
+    .then(() => user)
+    .catch(err => {
+      throw err;
+    })
 };
 
 export const handleSignIn = (email, password) => {

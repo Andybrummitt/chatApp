@@ -7,6 +7,9 @@
     font-size: 16px;
     background: #25e88a;
     color: white;
+    @media only screen and (min-width: 1000px) {
+        font-size: 1.2rem;
+    }
 
     &.google-btn {
         background: #0995e6;

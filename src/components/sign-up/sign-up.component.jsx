@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
+import { ThemeContext } from "../../App";
 import {
   checkUserNameAvailable,
   storeUserInDb,
@@ -11,6 +12,7 @@ import FormGroup from "../form-group/form-group.component";
 import "./sign-up.styles.scss";
 
 const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
+  const { darkMode } = useContext(ThemeContext);
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -73,7 +75,7 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
   };
 
   return (
-    <div className="sign-up">
+    <div className={`sign-up`}>
       <p className="go-to-signin" onClick={() => setHasAccount(true)}>
         I already have an account
       </p>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { connect } from "react-redux";
+import { ThemeContext } from "../../App";
 import Button from "../../components/button/button.component";
 import FormGroup from "../../components/form-group/form-group.component";
 import {
@@ -7,8 +8,12 @@ import {
   storeUsernameInDbAndUpdateProfile,
 } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { setHasUniqueUsername } from "../../redux/user/user.actions";
+import "./create-username.styles.scss";
 
 const CreateUsernamePage = ({ user, setHasUniqueUsername }) => {
+
+  const { darkMode } = useContext(ThemeContext);
+
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
 
@@ -35,18 +40,20 @@ const CreateUsernamePage = ({ user, setHasUniqueUsername }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p className="error-message">{error}</p>
-      <FormGroup
-        name="username"
-        type="text"
-        label="username"
-        value={username}
-        handleChange={(e) => setUsername(e.target.value)}
-        required
-      />
-      <Button type="submit" children="Submit" />
-    </form>
+    <div className={`create-username-container ${darkMode ? 'dark' : ''}`}>
+      <form onSubmit={handleSubmit}>
+        <p className="error-message">{error}</p>
+        <FormGroup
+          name="username"
+          type="text"
+          label="username"
+          value={username}
+          handleChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <Button type="submit" children="Submit" />
+      </form>
+    </div>
   );
 };
 

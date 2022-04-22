@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import "./App.css";
-import AccountPage from "./components/AccountPage/AccountPage.component";
+import AccountPage from "./pages/AccountPage/AccountPage.component";
 import Header from "./components/header/header.component";
 import {
   auth,
@@ -49,9 +49,10 @@ function App({
     return () => unsubscribe();
   }, []);
 
+
   return (
     <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>
-      <div className="App">
+      <div className={`App ${darkMode ? 'dark' : ''}`}>
         <Header />
         <Routes>
           <Route

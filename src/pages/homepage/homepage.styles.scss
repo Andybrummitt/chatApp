@@ -1,11 +1,9 @@
 .homepage-container {
-    width: 100vw;
-    height: 90vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
     padding: 0.5rem;
-    overflow: scroll;
 
     input {
         border: 1px solid black;

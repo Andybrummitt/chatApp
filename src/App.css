@@ -7,3 +7,24 @@
     font-family: 'Archivo', sans-serif;
 }
 
+.App {
+    height: 100vh;
+}
+
+.dark {
+    background: #3a3b3c;
+}
+
+button {
+    cursor: pointer;
+}
+
+.error-message {
+    color: red;
+    
+}
+@media only screen and (min-width: 1000px){
+    .error-message {
+        font-size: 1.5rem;
+    }
+}
