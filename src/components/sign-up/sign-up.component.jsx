@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 import { ThemeContext } from "../../App";
 import {
   checkUserNameAvailable,
+  handleSignIn,
+  handleSignOut,
   storeUserInDb,
   storeUsernameInDbAndUpdateProfile,
 } from "../../firebase/firebase-utils/firebase.auth.utils";
@@ -54,12 +56,14 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
       setError("Sorry that username is taken.");
       return;
     }
-    storeUserInDb(email, password)
+    storeUserInDb(email, password)  
       .then((user) => storeUsernameInDbAndUpdateProfile(user, displayName))
-      .then((user) => {
+      .then(() => {
         //  SOLUTION TO UPDATE AUTH STATE CHANGED TO UPDATE REDUX STATE FOR DISPLAY NAME CHANGE
-        logOutUser(user);
-        logInUser(user);
+        handleSignOut();
+      })
+      .then(() => {
+        handleSignIn(email, password)
       })
       .catch((error) => {
         setError(`${error.code ? error.code : ""} ${error.message}`);

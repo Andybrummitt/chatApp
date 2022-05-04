@@ -72,7 +72,9 @@ export const storeUsernameInDbAndUpdateProfile = async (user, username) => {
         displayName: username,
       })
     )
-    .then(() => user)
+    .then(() => {
+      return user
+    })
     .catch(err => {
       throw err;
     })

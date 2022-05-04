@@ -39,7 +39,9 @@ function App({
         logInUser(user);
         checkUserNameLinked(user)
           .then((response) => {
-            setHasUniqueUsername(response);
+            if(response === true){
+              setHasUniqueUsername(user.displayName)
+            }
           })
           .catch((error) => console.log(error));
       } else {
@@ -63,9 +65,9 @@ function App({
                 <Navigate to="/createusername" />
               ) : user === null ? (
                 <SignInSignUpPage />
-              ) : (
+              ) : hasUniqueUsername === user.displayName ? (
                 <HomePage />
-              )
+              ) : null
             }
           />
           <Route
