@@ -23,14 +23,14 @@ import "./chat-window.styles.scss";
 const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   const { darkMode } = useContext(ThemeContext);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [newMessage, setNewMessage] = useState("");
   const [chatMessages, setChatMessages] = useState([]);
 
   const inputRef = useRef(null);
 
-  const { uid: clientUserUid, displayName: clientUsername } = clientUser;
-  const { uid: otherUserUid, username: otherUsername } = otherUser;
+  const { uid: clientUserUid } = clientUser;
+  const { uid: otherUserUid } = otherUser;
   const chatId =
     clientUserUid > otherUserUid
       ? `${clientUserUid}${otherUserUid}`
@@ -67,31 +67,35 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
     );
     try {
       //  LISTEN FOR NEW MESSAGES
-      unsubscribe = onSnapshot(q, (querySnapshot) => {
-        let newMessages = querySnapshot.docChanges();
-        newMessages.reverse().forEach(async (newMessage) => {
-          //  SET MESSAGE STATE
-          if (isMounted && newMessage.type === "added") {
-            setChatMessages((chatMessages) => [
-              ...chatMessages,
-              newMessage.doc.data(),
-            ]);
-          }
-          //  SET UNREAD IN DATABASE TO FALSE IF CHAT OPEN (HAS READ)
-          if (newMessage.doc.data().from === otherUser.username) {
-            const chatRef = doc(db, "chats", chatId);
-            await setDoc(
-              chatRef,
-              {
-                lastMessage: {
-                  unread: false,
+      unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          let newMessages = querySnapshot.docChanges();
+          newMessages.reverse().forEach(async (newMessage) => {
+            //  SET MESSAGE STATE
+            if (isMounted && newMessage.type === "added") {
+              setChatMessages((chatMessages) => [
+                ...chatMessages,
+                newMessage.doc.data(),
+              ]);
+            }
+            //  SET UNREAD IN DATABASE TO FALSE IF CHAT OPEN (HAS READ)
+            if (newMessage.doc.data().from === otherUser.username) {
+              const chatRef = doc(db, "chats", chatId);
+              await setDoc(
+                chatRef,
+                {
+                  lastMessage: {
+                    unread: false,
+                  },
                 },
-              },
-              { merge: true }
-            );
-          }
-        });
-      }, (err) => setError(err));
+                { merge: true }
+              );
+            }
+          });
+        },
+        (err) => setError(err)
+      );
     } catch (err) {
       setError(err);
     }
@@ -101,8 +105,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
     e.preventDefault();
     try {
       sendMessage(clientUser, otherUser, chatId, newMessage);
-    }
-    catch(err){
+    } catch (err) {
       setError(err);
     }
     setNewMessage("");

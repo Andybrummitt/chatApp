@@ -11,7 +11,7 @@ const FormGroup = ({ handleChange, ...otherProps }) => {
     <div className="form-group">
       {label && <label htmlFor={type}>{`${label}:`}</label>}
       <input
-        className={`form-input ${darkMode ? 'dark' : ''}`}
+        className={`form-input ${darkMode ? "dark" : ""}`}
         onChange={handleChange}
         {...otherProps}
       />

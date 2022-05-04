@@ -23,7 +23,7 @@ const ChatsView = ({ user, chatOpen }) => {
     username: "",
     uid: null,
   });
-  const [ error, setError ] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const chatsQuery = query(
@@ -32,14 +32,13 @@ const ChatsView = ({ user, chatOpen }) => {
     );
 
     //  CALL WELCOME FUNCTION (MESSAGE FROM DEV)
-    sendWelcomeMessage(user)
-      .catch(err => setError(err))
+    sendWelcomeMessage(user).catch((err) => setError(err));
 
     //LISTENING FOR UPDATES ON DOCUMENTS WITH USERNAME IN DOCUMENT FIELD
     const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
       querySnapshot.forEach((chat) => {
-        getDocs(collection(db, "chats", chat.id, "messages")).then(
-          (snapshot) => {
+        getDocs(collection(db, "chats", chat.id, "messages"))
+          .then((snapshot) => {
             let chatIds = [];
             //  IF CHAT HAS MESSAGES
             if (snapshot.size > 0) {
@@ -58,14 +57,13 @@ const ChatsView = ({ user, chatOpen }) => {
                       return chat;
                     }
                   });
-                setError('');
+                setError("");
                 //  SET CHATS STATE
                 return newChats;
               });
             }
-          }
-        )
-        .catch(error => setError(error));
+          })
+          .catch((error) => setError(error));
       });
     });
     return () => {

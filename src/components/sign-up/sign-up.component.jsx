@@ -1,6 +1,4 @@
-import React, { useContext, useState } from "react";
-import { connect } from "react-redux";
-import { ThemeContext } from "../../App";
+import React, { useState } from "react";
 import {
   checkUserNameAvailable,
   handleSignIn,
@@ -8,13 +6,11 @@ import {
   storeUserInDb,
   storeUsernameInDbAndUpdateProfile,
 } from "../../firebase/firebase-utils/firebase.auth.utils";
-import { logInUser, logOutUser } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
 import FormGroup from "../form-group/form-group.component";
 import "./sign-up.styles.scss";
 
-const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
-  const { darkMode } = useContext(ThemeContext);
+const SignUp = ({ setHasAccount }) => {
   const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
@@ -56,14 +52,14 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
       setError("Sorry that username is taken.");
       return;
     }
-    storeUserInDb(email, password)  
+    storeUserInDb(email, password)
       .then((user) => storeUsernameInDbAndUpdateProfile(user, displayName))
       .then(() => {
         //  SOLUTION TO UPDATE AUTH STATE CHANGED TO UPDATE REDUX STATE FOR DISPLAY NAME CHANGE
         handleSignOut();
       })
       .then(() => {
-        handleSignIn(email, password)
+        handleSignIn(email, password);
       })
       .catch((error) => {
         setError(`${error.code ? error.code : ""} ${error.message}`);
@@ -128,9 +124,4 @@ const SignUp = ({ setHasAccount, logInUser, logOutUser }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  logInUser: (user) => dispatch(logInUser(user)),
-  logOutUser: (user) => dispatch(logOutUser(user)),
-});
-
-export default connect(null, mapDispatchToProps)(SignUp);
+export default SignUp;

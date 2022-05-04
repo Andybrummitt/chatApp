@@ -9,6 +9,3 @@ const rootReducer = combineReducers({
 });
 
 export const store = createStore(rootReducer, applyMiddleware(logger));
-
-
-// Logger with default options

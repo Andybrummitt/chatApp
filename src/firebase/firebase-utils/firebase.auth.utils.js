@@ -88,7 +88,6 @@ export const handleSignIn = (email, password) => {
       return user;
     })
     .catch((error) => {
-      console.log(error);
       throw error;
     });
 };

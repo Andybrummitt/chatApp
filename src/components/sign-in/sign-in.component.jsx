@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { ThemeContext } from "../../App";
+import React, { useState } from "react";
 import { handleSignIn } from "../../firebase/firebase-utils/firebase.auth.utils";
 import { logInUser } from "../../redux/user/user.actions";
 import Button from "../button/button.component";
@@ -8,7 +7,6 @@ import "./sign-in.styles.scss";
 
 const SignIn = ({ setHasAccount }) => {
   const [error, setError] = useState(null);
-  const { darkMode } = useContext(ThemeContext);
 
   const [userInfo, setUserInfo] = useState({
     email: "",

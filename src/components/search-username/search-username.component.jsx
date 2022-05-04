@@ -25,7 +25,7 @@ const SearchUsername = ({
         .catch((err) => {
           setSearchedUserData("");
           setUsernameFromSearch("");
-          setError(err)
+          setError(err);
         });
     }
     //  SHOW MESSAGES SHOWING NO USERS FOUND
@@ -40,9 +40,9 @@ const SearchUsername = ({
           placeholder="Search username"
           value={usernameFromSearch}
           handleChange={(e) => {
-            setUsernameFromSearch(e.target.value)
-            setError('')
-            }}
+            setUsernameFromSearch(e.target.value);
+            setError("");
+          }}
           required
         />
         <Button type="submit" children="Search" />

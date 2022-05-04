@@ -11,7 +11,11 @@ const SignInSignUpPage = () => {
   const { darkMode } = useContext(ThemeContext);
 
   return (
-    <div className={`sign-in-sign-up-container page-container ${darkMode ? 'dark' : ''}`}>
+    <div
+      className={`sign-in-sign-up-container page-container ${
+        darkMode ? "dark" : ""
+      }`}
+    >
       {hasAccount ? (
         <SignIn setHasAccount={setHasAccount} />
       ) : (

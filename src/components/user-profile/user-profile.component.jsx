@@ -37,9 +37,9 @@ const UserProfile = ({
   }, []);
 
   const messageDisplay = (msg) => {
-    if(msg.length <= 15) return msg;
-    return msg.substring(0,12).concat('...');
-  } 
+    if (msg.length <= 15) return msg;
+    return msg.substring(0, 12).concat("...");
+  };
 
   return (
     <div
@@ -52,11 +52,11 @@ const UserProfile = ({
     >
       <div className="profile-data">
         <p className="error-message">{error.message}</p>
-          <img
-            className="profile-image"
-            src={defaultProfileImage}
-            alt="profile-image"
-          />
+        <img
+          className="profile-image"
+          src={defaultProfileImage}
+          alt="profile-image"
+        />
         <div className="user-data">
           <p className="username">
             {chatUserData.username
@@ -65,17 +65,20 @@ const UserProfile = ({
               ? searchedUserData.username
               : null}
           </p>
-        {lastMessage && (
-          <p
-            className={`${
-              lastMessage.unread && lastMessage.from !== clientUser.displayName
-                ? "unread"
-                : ""
-            } last-message ${darkMode ? 'dark' : ''}`}
-          >
-            {`${lastMessage.from === clientUser.displayName ? 'You:' : ''} ${messageDisplay(lastMessage.message)}`}
-          </p>
-        )}
+          {lastMessage && (
+            <p
+              className={`${
+                lastMessage.unread &&
+                lastMessage.from !== clientUser.displayName
+                  ? "unread"
+                  : ""
+              } last-message ${darkMode ? "dark" : ""}`}
+            >
+              {`${
+                lastMessage.from === clientUser.displayName ? "You:" : ""
+              } ${messageDisplay(lastMessage.message)}`}
+            </p>
+          )}
         </div>
       </div>
     </div>
