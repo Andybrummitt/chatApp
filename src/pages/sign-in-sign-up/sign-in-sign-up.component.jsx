@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ThemeContext } from "../../App";
 import GoogleSignInBtn from "../../components/google-signin-btn/google-signin-btn.component";
 import SignIn from "../../components/sign-in/sign-in.component";

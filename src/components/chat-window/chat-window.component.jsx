@@ -103,7 +103,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(newMessage.length < 1) return;
+    if (newMessage.length < 1) return;
     try {
       sendMessage(clientUser, otherUser, chatId, newMessage);
     } catch (err) {
@@ -115,9 +115,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
   return (
     <div className="chat-window">
       <button className="back-to-chats-button" onClick={closeChatWindow}>
-        <FontAwesomeIcon
-          icon={faArrowLeft}
-        />
+        <FontAwesomeIcon icon={faArrowLeft} />
         <span>Back to chats</span>
       </button>
       {error && <p className="error-message">{error.message}</p>}

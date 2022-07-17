@@ -133,12 +133,12 @@ const ChatsView = ({ user, chatOpen }) => {
           .map((chat) => {
             return (
               <li key={uuidv4()}>
-              <UserProfile
-                lastMessage={chat.lastMessage}
-                chatUsers={chat.users}
-                clientUser={user}
-                searchedUserData={searchedUserData}
-              />
+                <UserProfile
+                  lastMessage={chat.lastMessage}
+                  chatUsers={chat.users}
+                  clientUser={user}
+                  searchedUserData={searchedUserData}
+                />
               </li>
             );
           })}

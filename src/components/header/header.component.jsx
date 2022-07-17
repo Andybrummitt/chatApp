@@ -1,6 +1,6 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Switch from "react-switch";
@@ -28,15 +28,11 @@ const Header = (user) => {
           />
           <label>Dark Mode</label>
         </form>
-        {user.user && 
-          <Link
-            to="/account"
-            className="nav-link account-link"
-        >
-          <FontAwesomeIcon className="account-icon" icon={faUser} size="2x" />
-        </Link>
-        }
-        
+        {user.user && (
+          <Link to="/account" className="nav-link account-link">
+            <FontAwesomeIcon className="account-icon" icon={faUser} size="2x" />
+          </Link>
+        )}
       </nav>
     </header>
   );

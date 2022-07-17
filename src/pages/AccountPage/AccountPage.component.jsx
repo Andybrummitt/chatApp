@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { ThemeContext } from "../../App";
 import {
   deleteAccount,
@@ -7,16 +7,15 @@ import {
 import "./accountpage.styles.scss";
 
 const AccountPage = () => {
-
   const { darkMode } = useContext(ThemeContext);
 
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
   const [error, setError] = useState(null);
   const deleteAccountAndShowMessage = () => {
-    deleteAccount().catch(error => setError(error));
+    deleteAccount().catch((error) => setError(error));
   };
   return (
-    <div className={`account-page-container ${darkMode ? 'dark' : ''}`}>
+    <div className={`account-page-container ${darkMode ? "dark" : ""}`}>
       <h2>My Account</h2>
       {error && <p className="error-message">{error.message}</p>}
       <ul className="account-options">

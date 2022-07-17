@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ThemeContext } from "../../App";
 import defaultProfileImage from "../../assets/default-profile-image.png";

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { connect } from "react-redux";
 import { ThemeContext } from "../../App";
 import ChatWindow from "../../components/chat-window/chat-window.component";

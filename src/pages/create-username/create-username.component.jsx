@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { connect } from "react-redux";
 import { ThemeContext } from "../../App";
 import Button from "../../components/button/button.component";
@@ -11,7 +11,6 @@ import { setHasUniqueUsername } from "../../redux/user/user.actions";
 import "./create-username.styles.scss";
 
 const CreateUsernamePage = ({ user, setHasUniqueUsername }) => {
-
   const { darkMode } = useContext(ThemeContext);
 
   const [username, setUsername] = useState("");
@@ -40,7 +39,7 @@ const CreateUsernamePage = ({ user, setHasUniqueUsername }) => {
   };
 
   return (
-    <div className={`create-username-container ${darkMode ? 'dark' : ''}`}>
+    <div className={`create-username-container ${darkMode ? "dark" : ""}`}>
       <form onSubmit={handleSubmit}>
         <p className="error-message">{error}</p>
         <FormGroup
