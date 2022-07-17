@@ -9,6 +9,9 @@
     width: 100%;
     margin-left: auto;
     margin-right: auto;
+    ul li {
+            border-bottom: 0.1rem solid grey;
+        }
 }
 
 .chats-title {

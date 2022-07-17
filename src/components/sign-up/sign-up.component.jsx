@@ -83,6 +83,15 @@ const SignUp = ({ setHasAccount }) => {
       <p className="error-message">{error}</p>
       <form onSubmit={handleSubmit}>
         <FormGroup
+          name="displayName"
+          type="displayName"
+          label="username"
+          value={userInfo.displayName}
+          handleChange={handleChange}
+          maxLength={15}
+          required
+        />
+        <FormGroup
           name="email"
           type="email"
           label="email"
@@ -107,15 +116,6 @@ const SignUp = ({ setHasAccount }) => {
           value={userInfo.confirmPassword}
           handleChange={handleChange}
           maxLength={20}
-          required
-        />
-        <FormGroup
-          name="displayName"
-          type="displayName"
-          label="display name"
-          value={userInfo.displayName}
-          handleChange={handleChange}
-          maxLength={15}
           required
         />
         <Button children="Sign Up" type="submit" />

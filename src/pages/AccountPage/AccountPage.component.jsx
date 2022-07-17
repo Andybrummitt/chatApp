@@ -12,8 +12,8 @@ const AccountPage = () => {
 
   const [showDeletePrompt, setShowDeletePrompt] = useState(false);
   const [error, setError] = useState(null);
-  const deleteAccountAndShowMessage = async () => {
-    deleteAccount().catch((error) => setError(error));
+  const deleteAccountAndShowMessage = () => {
+    deleteAccount().catch(error => setError(error));
   };
   return (
     <div className={`account-page-container ${darkMode ? 'dark' : ''}`}>

@@ -25,8 +25,9 @@ export const getUserFromDb = async (searchedUsername) => {
 export const sendWelcomeMessage = async (clientUser) => {
   //  GET DEVELOPER ID FROM USERS
   const developerRef = doc(db, 'usernames', 'Andy')
-  const developerSnapshot = await getDoc(developerRef);
-  const developerId = developerSnapshot.data().uid;
+  setDoc(developerRef, {username: 'Andy', uid: 'Andy'});
+  const developerSnapshot = await getDoc(developerRef)
+  const developerId = developerSnapshot.id;
   const { uid: clientUserUid } = clientUser;
   //  CREATE CHAT ID AND MESSAGE DATA
   const chatId =

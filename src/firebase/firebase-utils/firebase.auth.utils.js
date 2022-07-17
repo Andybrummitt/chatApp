@@ -102,6 +102,7 @@ export const handleSignOut = () => {
 };
 
 export const checkUserNameAvailable = async (username) => {
+  if(username === "Andy") return false;
   const usernameRef = doc(db, "usernames", username);
   const usernameSnap = await getDoc(usernameRef);
   if (usernameSnap.exists()) {
@@ -119,14 +120,12 @@ export const checkUserNameLinked = async (user) => {
     .catch((err) => err);
 };
 
-export const deleteAccount = () => {
+export const deleteAccount = async () => {
   const auth = getAuth();
   const user = auth.currentUser;
+  await deleteDoc(doc(db, "usernames", user.displayName));
+  await deleteDoc(doc(db, "users", user.uid))
   return deleteUser(user)
-    .then(async () => {
-      await deleteDoc(doc(db, "usernames", user.displayName));
-      return;
-    })
     .catch((error) => {
       throw error;
     });

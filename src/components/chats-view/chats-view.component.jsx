@@ -5,7 +5,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../firebase/firebase-utils/firebase.auth.utils";
@@ -31,9 +31,6 @@ const ChatsView = ({ user, chatOpen }) => {
       where("users", "array-contains-any", [clientUsername])
     );
 
-    //  CALL WELCOME FUNCTION (MESSAGE FROM DEV)
-    sendWelcomeMessage(user).catch((err) => setError(err));
-
     //LISTENING FOR UPDATES ON DOCUMENTS WITH USERNAME IN DOCUMENT FIELD
     const unsubscribe = onSnapshot(chatsQuery, (querySnapshot) => {
       querySnapshot.forEach((chat) => {
@@ -46,7 +43,7 @@ const ChatsView = ({ user, chatOpen }) => {
               const newChatObj = { ...chat.data(), id };
               setChats((prevChats) => {
                 const newChats = [...prevChats, newChatObj]
-                  //  SORT IN ORDER OF LASTEST MESSAGE
+                  //  SORT IN ORDER OF LAST MESSAGE
                   .sort(
                     (a, b) => b.lastMessage.createdAt - a.lastMessage.createdAt
                   )
@@ -66,6 +63,14 @@ const ChatsView = ({ user, chatOpen }) => {
           .catch((error) => setError(error));
       });
     });
+
+    //  CALL WELCOME FUNCTION (MESSAGE FROM DEV)
+    if (chats.length < 1) {
+      sendWelcomeMessage(user).catch((err) => {
+        setError(err);
+      });
+    }
+
     return () => {
       unsubscribe();
     };
@@ -127,13 +132,14 @@ const ChatsView = ({ user, chatOpen }) => {
           })
           .map((chat) => {
             return (
+              <li key={uuidv4()}>
               <UserProfile
                 lastMessage={chat.lastMessage}
                 chatUsers={chat.users}
                 clientUser={user}
                 searchedUserData={searchedUserData}
-                key={uuidv4()}
               />
+              </li>
             );
           })}
       </ul>

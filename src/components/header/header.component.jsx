@@ -11,7 +11,7 @@ const Header = (user) => {
   const { darkMode, toggleDarkMode } = useContext(ThemeContext);
 
   return (
-    <div className="header">
+    <header className="header">
       <nav>
         <Link to="/" className="nav-link logo-icon">
           <p className="title">Chatty</p>
@@ -28,14 +28,17 @@ const Header = (user) => {
           />
           <label>Dark Mode</label>
         </form>
-        <Link
-          to={user.user ? "/account" : "/"}
-          className="nav-link account-link"
+        {user.user && 
+          <Link
+            to="/account"
+            className="nav-link account-link"
         >
           <FontAwesomeIcon className="account-icon" icon={faUser} size="2x" />
         </Link>
+        }
+        
       </nav>
-    </div>
+    </header>
   );
 };
 

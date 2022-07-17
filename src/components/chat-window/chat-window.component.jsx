@@ -103,6 +103,7 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(newMessage.length < 1) return;
     try {
       sendMessage(clientUser, otherUser, chatId, newMessage);
     } catch (err) {
@@ -113,12 +114,12 @@ const ChatWindow = ({ otherUser, clientUser, closeChatWindow }) => {
 
   return (
     <div className="chat-window">
-      <FontAwesomeIcon
-        className="back-arrow-icon"
-        icon={faArrowLeft}
-        onClick={closeChatWindow}
-        size="2x"
-      />
+      <button className="back-to-chats-button" onClick={closeChatWindow}>
+        <FontAwesomeIcon
+          icon={faArrowLeft}
+        />
+        <span>Back to chats</span>
+      </button>
       {error && <p className="error-message">{error.message}</p>}
       <p className="chat-title">Chatting with {otherUser.username}</p>
       <div className={`chat-window-container ${darkMode ? "dark" : ""}`}>
